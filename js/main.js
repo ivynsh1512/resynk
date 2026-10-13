@@ -68,24 +68,24 @@ class ResynkApp {
   }
 
   setupMobileMenu() {
-    const navMenu   = document.getElementById('nav-menu');
-    const btnOpen   = document.getElementById('btn-hamburger');
-    const btnClose  = document.getElementById('btn-close-menu');
+    const navMenu = document.getElementById('nav-menu');
+    const btnOpen = document.getElementById('btn-hamburger');
 
     if (!navMenu || !btnOpen) return;
 
-    const openMenu = () => {
-      navMenu.classList.add('mobile-open');
-      document.body.style.overflow = 'hidden';
+    const toggleMenu = () => {
+      const isOpen = navMenu.classList.toggle('mobile-open');
+      btnOpen.classList.toggle('active', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
     };
 
     const closeMenu = () => {
       navMenu.classList.remove('mobile-open');
+      btnOpen.classList.remove('active');
       document.body.style.overflow = '';
     };
 
-    btnOpen.addEventListener('click', openMenu);
-    if (btnClose) btnClose.addEventListener('click', closeMenu);
+    btnOpen.addEventListener('click', toggleMenu);
 
     // Close on nav-link click (page navigation)
     navMenu.querySelectorAll('.nav-link').forEach(link => {

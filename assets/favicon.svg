@@ -1,18 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
   <defs>
-    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FCE588" />
-      <stop offset="50%" stop-color="#D4AF37" />
-      <stop offset="100%" stop-color="#997818" />
+    <linearGradient id="favGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8CE8D"/>
+      <stop offset="50%" stop-color="#C5A059"/>
+      <stop offset="100%" stop-color="#9E7A33"/>
+    </linearGradient>
+    <linearGradient id="bgLinear" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#181B26"/>
+      <stop offset="100%" stop-color="#0E1017"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="16" fill="#08090C"/>
-  <rect width="62" height="62" x="1" y="1" rx="15" fill="none" stroke="rgba(212,175,55,0.3)" stroke-width="1.5"/>
-  <!-- Guitar Headstock & Strings / Soundwave R mark -->
-  <path d="M32 10 L32 20 M28 12 L36 12 M27 16 L37 16 M29 20 L35 20" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round"/>
-  <!-- R Soundwave Body -->
-  <path d="M22 28 Q24 22 30 22 C36 22 39 25 39 29 C39 33 35 36 30 36 L24 36 L24 50 M30 36 L40 50" fill="none" stroke="url(#goldGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- Resonance Wave -->
-  <path d="M14 36 Q18 30 22 36 Q26 42 30 36" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
-  <path d="M38 36 Q42 30 46 36 Q50 42 54 36" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+
+  <rect width="64" height="64" rx="16" fill="url(#bgLinear)" stroke="url(#favGold)" stroke-width="1.5"/>
+  <rect x="3" y="3" width="58" height="58" rx="13" fill="none" stroke="rgba(232, 206, 141, 0.2)" stroke-width="1"/>
+
+  <!-- Instrument Strings & Acoustic Resonance -->
+  <line x1="26" y1="16" x2="26" y2="48" stroke="url(#favGold)" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/>
+  <line x1="32" y1="12" x2="32" y2="52" stroke="url(#favGold)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="38" y1="16" x2="38" y2="48" stroke="url(#favGold)" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/>
+
+  <path d="M18 32 C22 25, 42 25, 46 32 C42 39, 22 39, 18 32 Z" fill="none" stroke="url(#favGold)" stroke-width="1.8"/>
+  <circle cx="32" cy="32" r="3.5" fill="url(#favGold)"/>
+  <circle cx="32" cy="12" r="2" fill="#E8CE8D"/>
+  <circle cx="32" cy="52" r="2" fill="#E8CE8D"/>
 </svg>

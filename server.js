@@ -272,7 +272,7 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(200, {
       'Content-Type': contentType,
       'Access-Control-Allow-Origin': '*',
-      'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=3600'
+      'Cache-Control': 'no-cache, must-revalidate'
     });
 
     const stream = fs.createReadStream(filePath);

@@ -10,11 +10,11 @@
 
   <!-- Proper Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="apple-touch-icon" href="assets/logo.jpg">
+  <link rel="apple-touch-icon" href="assets/favicon.svg">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/player.css">
+  <link rel="stylesheet" href="css/style.css?v=2.2">
+  <link rel="stylesheet" href="css/player.css?v=2.2">
 </head>
 <body>
 
@@ -24,7 +24,7 @@
   <header class="resynk-navbar">
     <div class="container nav-container">
       <a href="/" class="brand-logo" aria-label="resynk Academy Home">
-        <img src="assets/logo.jpg" alt="resynk Logo" class="logo-brand-img">
+        <img src="assets/logo-mark.svg" alt="resynk Conservatory" class="logo-brand-img">
         <div class="logo-text-group">
           <span class="logo-title">re<span>synk</span></span>
           <span class="logo-sub">D Paul's Academy • Student Portal</span>
@@ -33,7 +33,6 @@
 
       <nav aria-label="Primary Navigation" id="primary-nav">
         <ul class="nav-menu" id="nav-menu">
-          <button type="button" class="mobile-menu-close" id="btn-close-menu" aria-label="Close Menu">&#215;</button>
           <li><a href="/" class="nav-link">Home</a></li>
           <li><a href="/courses" class="nav-link">Courses</a></li>
           <li><a href="/portfolio" class="nav-link">The Founder</a></li>
@@ -195,22 +194,142 @@
             <!-- Left Column: Protected Video Player & Notes -->
             <div class="classroom-player-column">
               <div class="resynk-player-container" id="classroom-player-wrapper">
-                <div class="resynk-player-frame">
+                <div class="resynk-player-frame" id="classroom-player-frame">
                   <video 
                     id="classroom-video" 
                     preload="metadata" 
                     controlsList="nodownload noplaybackrate noremoteplayback" 
                     disablePictureInPicture 
-                    playsinline 
-                    controls
+                    playsinline
                   >
                     <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
                     Your browser does not support HTML5 video.
                   </video>
 
+                  <!-- Big Center Play/Pause Ripple Button -->
+                  <button type="button" class="player-center-play-btn" id="btn-player-center-play" aria-label="Play Video">
+                    <svg class="icon-play" width="34" height="34" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="6 3 20 12 6 21 6 3"></polygon>
+                    </svg>
+                    <svg class="icon-pause" width="34" height="34" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                      <rect x="5" y="4" width="5" height="16" rx="1"></rect>
+                      <rect x="14" y="4" width="5" height="16" rx="1"></rect>
+                    </svg>
+                  </button>
+
+                  <!-- Corner Forensic Micro-Stamps (Anti-Cropping Ghost Fingerprints) -->
+                  <div class="forensic-corner-stamp stamp-top-left" id="forensic-stamp-tl">resynk • PROTECTED</div>
+                  <div class="forensic-corner-stamp stamp-bottom-right" id="forensic-stamp-br">UID: RESYNK-STUDENT</div>
+
                   <!-- Dynamic Locked Overlay for Non-Subscribers -->
                   <div class="resynk-locked-screen" id="classroom-locked-overlay" style="display: none;">
                     <!-- Injected dynamically by main.js -->
+                  </div>
+
+                  <!-- Custom Player Bottom Controls Overlay Bar -->
+                  <div class="resynk-custom-controls" id="resynk-custom-controls">
+                    <!-- Timeline Scrubber Bar -->
+                    <div class="player-timeline-wrapper" id="player-timeline-wrapper">
+                      <div class="player-timeline-track" id="player-timeline-track">
+                        <div class="timeline-buffered" id="timeline-buffered"></div>
+                        <div class="timeline-played" id="timeline-played">
+                          <div class="timeline-scrubber-handle"></div>
+                        </div>
+                      </div>
+                      <div class="timeline-tooltip" id="timeline-tooltip">00:00</div>
+                    </div>
+
+                    <!-- Bottom Controls Row -->
+                    <div class="player-controls-row">
+                      <div class="controls-left">
+                        <!-- Play / Pause Button -->
+                        <button type="button" class="ctrl-btn" id="ctrl-play-pause" aria-label="Play or Pause (Space)" title="Play/Pause (Space)">
+                          <svg class="ctrl-icon-play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                          </svg>
+                          <svg class="ctrl-icon-pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                            <rect x="5" y="4" width="4" height="16" rx="1"></rect>
+                            <rect x="15" y="4" width="4" height="16" rx="1"></rect>
+                          </svg>
+                        </button>
+
+                        <!-- Rewind 10s -->
+                        <button type="button" class="ctrl-btn ctrl-jump-btn" id="ctrl-rewind-10" aria-label="Rewind 10 seconds (Left Arrow)" title="Rewind 10s (Left Arrow)">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 17l-5-5 5-5M18 17l-5-5 5-5"/>
+                          </svg>
+                          <span class="ctrl-jump-label">10</span>
+                        </button>
+
+                        <!-- Fast-forward 10s -->
+                        <button type="button" class="ctrl-btn ctrl-jump-btn" id="ctrl-forward-10" aria-label="Skip forward 10 seconds (Right Arrow)" title="Forward 10s (Right Arrow)">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M13 17l5-5-5-5M6 17l5-5-5-5"/>
+                          </svg>
+                          <span class="ctrl-jump-label">10</span>
+                        </button>
+
+                        <!-- Volume / Mute Control -->
+                        <div class="ctrl-volume-group">
+                          <button type="button" class="ctrl-btn" id="ctrl-volume-btn" aria-label="Mute / Unmute (M)" title="Mute/Unmute (M)">
+                            <svg class="vol-icon-high" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            </svg>
+                            <svg class="vol-icon-muted" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                              <line x1="23" y1="9" x2="17" y2="15"></line>
+                              <line x1="17" y1="9" x2="23" y2="15"></line>
+                            </svg>
+                          </button>
+                          <div class="vol-slider-wrap">
+                            <input type="range" class="vol-range" id="ctrl-volume-slider" min="0" max="1" step="0.05" value="1" aria-label="Volume Slider">
+                          </div>
+                        </div>
+
+                        <!-- Time Counter -->
+                        <div class="ctrl-time-display">
+                          <span id="ctrl-current-time">00:00</span>
+                          <span class="ctrl-time-sep">/</span>
+                          <span id="ctrl-duration">00:00</span>
+                        </div>
+                      </div>
+
+                      <div class="controls-right">
+                        <!-- Playback Speed Menu -->
+                        <div class="ctrl-speed-menu-wrap">
+                          <button type="button" class="ctrl-pill-btn" id="ctrl-speed-btn" title="Playback Speed">
+                            <span id="ctrl-current-speed">1x</span>
+                          </button>
+                          <div class="ctrl-speed-dropdown" id="ctrl-speed-dropdown">
+                            <button type="button" data-speed="0.75">0.75x</button>
+                            <button type="button" data-speed="1.0" class="active">1x (Normal)</button>
+                            <button type="button" data-speed="1.25">1.25x</button>
+                            <button type="button" data-speed="1.5">1.5x</button>
+                            <button type="button" data-speed="2.0">2x</button>
+                          </div>
+                        </div>
+
+                        <!-- Resolution Badge -->
+                        <span class="ctrl-quality-badge" title="Studio Master 1080p">1080p HD</span>
+
+                        <!-- Fullscreen Toggle (Container-Level DRM Protected) -->
+                        <button type="button" class="ctrl-btn" id="ctrl-fullscreen-btn" aria-label="Fullscreen (F)" title="Fullscreen (F)">
+                          <svg class="fs-icon-enter" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <polyline points="9 21 3 21 3 15"></polyline>
+                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                          </svg>
+                          <svg class="fs-icon-exit" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                            <polyline points="4 14 10 14 10 20"></polyline>
+                            <polyline points="20 10 14 10 14 4"></polyline>
+                            <line x1="14" y1="10" x2="21" y2="3"></line>
+                            <line x1="10" y1="14" x2="3" y2="21"></line>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -269,7 +388,7 @@
       <div class="footer-top">
         <div class="footer-brand">
           <div class="brand-logo">
-            <img src="assets/logo.jpg" alt="resynk Logo" class="logo-brand-img">
+            <img src="assets/logo-mark.svg" alt="resynk Conservatory" class="logo-brand-img">
             <div class="logo-text-group">
               <span class="logo-title">re<span>synk</span></span>
               <span class="logo-sub">D Paul's Academy • Student Portal</span>
