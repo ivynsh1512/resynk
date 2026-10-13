@@ -58,6 +58,7 @@ class ResynkApp {
     this.setupCourseFilters();
     this.setupPortfolioTabs();
     this.setupContactForm();
+    this.setupPortalAuthGate();
 
     // Setup Student Portal if on portal.html
     if (this.playerContainer && this.playerVideo) {
@@ -113,11 +114,6 @@ class ResynkApp {
      AUTHENTICATION & USER STATE
      ========================================================== */
   setupAuthListener() {
-    // Portal Google login button
-    if (this.btnPortalGoogleLogin) {
-      this.btnPortalGoogleLogin.addEventListener("click", () => this.handleGoogleLogin());
-    }
-
     firebaseService.onAuth(async (user) => {
       this.drmGuard.setCurrentUser(user);
       this.renderNavAuth(user);
@@ -132,6 +128,7 @@ class ResynkApp {
           if (this.portalWelcomeHeading) {
             this.portalWelcomeHeading.textContent = `Welcome back, ${user.displayName.split(" ")[0]}!`;
           }
+          this.renderEmailVerificationBanner(user);
           this.refreshClassroomAccess();
         } else {
           this.portalAuthGate.style.display = "block";
@@ -147,12 +144,13 @@ class ResynkApp {
     if (!this.authContainer) return;
 
     if (user) {
+      const isVerified = user.emailVerified;
       this.authContainer.innerHTML = `
         <div class="user-profile-badge" id="btn-user-profile" title="Signed in as ${user.email}">
-          <img class="user-avatar" src="${user.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80'}" alt="Student avatar">
+          <img class="user-avatar" src="${user.photoURL}" alt="${user.displayName}">
           <div class="user-info">
             <span class="user-name">${user.displayName.split(" ")[0]}</span>
-            <span class="user-status">Student</span>
+            <span class="user-status">${isVerified ? 'Verified Student' : 'Student (Unverified)'}</span>
           </div>
           <button type="button" class="btn-signout" id="btn-logout" title="Sign Out">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -173,72 +171,286 @@ class ResynkApp {
       }
     } else {
       this.authContainer.innerHTML = `
-        <button type="button" class="btn-google-login" id="btn-login-google">
-          <svg width="18" height="18" viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
-            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+        <button type="button" class="btn-signin-nav" id="btn-open-auth-modal" aria-label="Sign In or Register">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
           </svg>
-          <span>Sign In with Google</span>
+          <span>Sign In</span>
         </button>
       `;
 
-      const loginBtn = document.getElementById("btn-login-google");
-      if (loginBtn) {
-        loginBtn.addEventListener("click", () => this.handleGoogleLogin());
+      const signinBtn = document.getElementById("btn-open-auth-modal");
+      if (signinBtn) {
+        signinBtn.addEventListener("click", () => this.showAuthModal("signin"));
       }
     }
   }
 
-  async handleGoogleLogin() {
-    try {
-      await firebaseService.loginWithGoogle();
-    } catch (err) {
-      if (err.message === "POPUP_CLOSED") return;
-      this.showLoginFallbackModal(err.message);
+  renderEmailVerificationBanner(user) {
+    const bannerBox = document.getElementById("email-verification-banner-container");
+    if (!bannerBox) return;
+
+    if (user && user.emailVerified === false) {
+      bannerBox.innerHTML = `
+        <div class="email-verification-banner">
+          <span>✉️ Your student email (<strong>${user.email}</strong>) is pending verification. Please check your inbox or spam.</span>
+          <button type="button" class="btn-resend-verification" id="btn-portal-resend-verif">Resend Verification Email</button>
+        </div>
+      `;
+
+      const resendBtn = document.getElementById("btn-portal-resend-verif");
+      if (resendBtn) {
+        resendBtn.addEventListener("click", async () => {
+          try {
+            resendBtn.disabled = true;
+            resendBtn.textContent = "Sending...";
+            await firebaseService.resendVerificationEmail();
+            resendBtn.textContent = "Sent to Inbox!";
+          } catch (err) {
+            alert(err.message || "Failed to resend. Please try again later.");
+            resendBtn.disabled = false;
+            resendBtn.textContent = "Resend Verification Email";
+          }
+        });
+      }
+    } else {
+      bannerBox.innerHTML = "";
     }
   }
 
-  showLoginFallbackModal(errorCode) {
-    const existing = document.getElementById("login-fallback-modal");
-    if (existing) existing.remove();
+  setupPortalAuthGate() {
+    const tabSignin = document.getElementById("tab-portal-signin");
+    const tabSignup = document.getElementById("tab-portal-signup");
+    const formSignin = document.getElementById("form-portal-signin");
+    const formSignup = document.getElementById("form-portal-signup");
+    const formReset = document.getElementById("form-portal-reset");
+    const feedbackBox = document.getElementById("portal-auth-feedback");
+    const linkForgot = document.getElementById("link-portal-forgot");
+    const linkBack = document.getElementById("link-portal-back-to-signin");
+    const btnGoogle = document.getElementById("btn-portal-google-login");
 
-    let noticeText = "Please try again or contact Master Reynole at +91 910 839 6010 for assistance.";
-    if (errorCode === "FIREBASE_PROVIDER_DISABLED") {
-      noticeText = "Google Sign-in is not yet enabled on this account. Please ensure your Firebase project has Google authentication activated.";
-    } else if (errorCode === "UNAUTHORIZED_DOMAIN") {
-      noticeText = "This domain is not yet authorized for Google Sign-in. Please contact the administrator.";
+    if (!tabSignin || !tabSignup || !formSignin) return;
+
+    const showFeedback = (msg, isError = true) => {
+      if (!feedbackBox) return;
+      feedbackBox.className = `auth-feedback-box ${isError ? 'error' : 'success'}`;
+      feedbackBox.textContent = msg;
+    };
+
+    const clearFeedback = () => {
+      if (feedbackBox) {
+        feedbackBox.className = "auth-feedback-box";
+        feedbackBox.textContent = "";
+      }
+    };
+
+    // Tab switching
+    tabSignin.addEventListener("click", () => {
+      tabSignin.classList.add("active");
+      tabSignup.classList.remove("active");
+      formSignin.style.display = "block";
+      formSignup.style.display = "none";
+      if (formReset) formReset.style.display = "none";
+      clearFeedback();
+    });
+
+    tabSignup.addEventListener("click", () => {
+      tabSignup.classList.add("active");
+      tabSignin.classList.remove("active");
+      formSignup.style.display = "block";
+      formSignin.style.display = "none";
+      if (formReset) formReset.style.display = "none";
+      clearFeedback();
+    });
+
+    // Forgot password view
+    if (linkForgot) {
+      linkForgot.addEventListener("click", (e) => {
+        e.preventDefault();
+        formSignin.style.display = "none";
+        formSignup.style.display = "none";
+        if (formReset) formReset.style.display = "block";
+        tabSignin.classList.remove("active");
+        tabSignup.classList.remove("active");
+        clearFeedback();
+      });
     }
 
+    if (linkBack) {
+      linkBack.addEventListener("click", (e) => {
+        e.preventDefault();
+        tabSignin.click();
+      });
+    }
+
+    // Sign In Submit
+    formSignin.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearFeedback();
+      const email = document.getElementById("portal-signin-email").value.trim();
+      const pass = document.getElementById("portal-signin-password").value;
+      const submitBtn = document.getElementById("btn-portal-submit-signin");
+
+      try {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = "<span>Signing in...</span>";
+        await firebaseService.loginWithEmail(email, pass);
+      } catch (err) {
+        showFeedback(this.formatAuthError(err), true);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = "<span>Sign In to Classroom</span>";
+      }
+    });
+
+    // Sign Up Submit
+    formSignup.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearFeedback();
+      const name = document.getElementById("portal-signup-name").value.trim();
+      const email = document.getElementById("portal-signup-email").value.trim();
+      const pass = document.getElementById("portal-signup-password").value;
+      const submitBtn = document.getElementById("btn-portal-submit-signup");
+
+      try {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = "<span>Creating account...</span>";
+        const res = await firebaseService.signupWithEmail(name, email, pass);
+        if (res.verificationSent) {
+          showFeedback(`Account created! A confirmation email has been dispatched to ${email}.`, false);
+        }
+      } catch (err) {
+        showFeedback(this.formatAuthError(err), true);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = "<span>Create Student Account</span>";
+      }
+    });
+
+    // Password Reset Submit
+    if (formReset) {
+      formReset.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        clearFeedback();
+        const email = document.getElementById("portal-reset-email").value.trim();
+        const submitBtn = document.getElementById("btn-portal-submit-reset");
+
+        try {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = "<span>Sending reset email...</span>";
+          await firebaseService.resetPassword(email);
+          showFeedback(`Password reset email sent to ${email}! Please check your inbox or spam folder.`, false);
+        } catch (err) {
+          showFeedback(this.formatAuthError(err), true);
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = "<span>Send Password Reset Email</span>";
+        }
+      });
+    }
+
+    // Google Sign-In
+    if (btnGoogle) {
+      btnGoogle.addEventListener("click", () => this.handleGoogleLogin());
+    }
+  }
+
+  showAuthModal(initialTab = "signin") {
+    const existing = document.getElementById("resynk-auth-modal");
+    if (existing) existing.remove();
+
     const modal = document.createElement("div");
-    modal.id = "login-fallback-modal";
+    modal.id = "resynk-auth-modal";
     modal.className = "resynk-modal-backdrop active";
     modal.innerHTML = `
-      <div class="resynk-modal-card" style="max-width: 420px;">
+      <div class="auth-modal-card">
         <div class="modal-header">
           <div class="rzp-brand-badge">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            Sign-In Notice
+            Student Authentication
           </div>
-          <button type="button" class="btn-close-modal" id="close-login-modal">&times;</button>
+          <button type="button" class="btn-close-modal" id="modal-auth-close">&times;</button>
         </div>
+
         <div class="modal-body">
-          <p style="margin-bottom: 20px; font-size: 0.92rem; color: #CBD5E1; line-height: 1.6;">
-            ${noticeText}
-          </p>
-          <button type="button" class="btn-primary" id="btn-retry-google" style="width: 100%; justify-content: center;">
+          <div class="auth-tabs-row">
+            <button type="button" class="auth-tab-btn ${initialTab === 'signin' ? 'active' : ''}" id="modal-tab-signin">Sign In</button>
+            <button type="button" class="auth-tab-btn ${initialTab === 'signup' ? 'active' : ''}" id="modal-tab-signup">Create Account</button>
+          </div>
+
+          <div id="modal-auth-feedback" class="auth-feedback-box"></div>
+
+          <!-- 1. Sign In Form -->
+          <form id="modal-form-signin" style="${initialTab === 'signin' ? 'display:block;' : 'display:none;'}">
+            <div class="auth-input-group">
+              <label for="modal-signin-email">Student Email</label>
+              <input type="email" id="modal-signin-email" class="form-control" placeholder="e.g. student@resynk.in" required>
+            </div>
+            <div class="auth-input-group">
+              <label for="modal-signin-password">Password</label>
+              <input type="password" id="modal-signin-password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <div class="auth-actions-row">
+              <span></span>
+              <a href="#" class="auth-forgot-link" id="modal-link-forgot">Forgot Password?</a>
+            </div>
+            <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;" id="btn-modal-signin">
+              <span>Sign In</span>
+            </button>
+          </form>
+
+          <!-- 2. Sign Up Form -->
+          <form id="modal-form-signup" style="${initialTab === 'signup' ? 'display:block;' : 'display:none;'}">
+            <div class="auth-input-group">
+              <label for="modal-signup-name">Full Name</label>
+              <input type="text" id="modal-signup-name" class="form-control" placeholder="e.g. Divya Sharma" required>
+            </div>
+            <div class="auth-input-group">
+              <label for="modal-signup-email">Email Address</label>
+              <input type="email" id="modal-signup-email" class="form-control" placeholder="e.g. student@gmail.com" required>
+            </div>
+            <div class="auth-input-group">
+              <label for="modal-signup-password">Password (Minimum 6 characters)</label>
+              <input type="password" id="modal-signup-password" class="form-control" placeholder="••••••••" minlength="6" required>
+            </div>
+            <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 6px;" id="btn-modal-signup">
+              <span>Create Account</span>
+            </button>
+            <span style="display: block; font-size: 0.78rem; color: var(--text-muted); margin-top: 10px; line-height: 1.4; text-align: center;">
+              A verification link will be dispatched to your email address.
+            </span>
+          </form>
+
+          <!-- 3. Password Reset Form -->
+          <form id="modal-form-reset" style="display: none;">
+            <div class="auth-input-group">
+              <label for="modal-reset-email">Registered Email Address</label>
+              <input type="email" id="modal-reset-email" class="form-control" placeholder="e.g. student@resynk.in" required>
+            </div>
+            <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;" id="btn-modal-reset">
+              <span>Send Password Reset Email</span>
+            </button>
+            <div style="margin-top: 12px; text-align: center;">
+              <a href="#" class="auth-forgot-link" id="modal-link-back">Back to Sign In</a>
+            </div>
+          </form>
+
+          <div class="auth-divider">
+            <span>or continue with</span>
+          </div>
+
+          <button type="button" class="btn-portal-google" id="btn-modal-google" style="margin-bottom: 8px;">
             <svg width="18" height="18" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
               <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
               <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
               <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
             </svg>
-            <span>Retry with Google</span>
+            <span>Continue with Google</span>
           </button>
         </div>
       </div>
@@ -246,12 +458,165 @@ class ResynkApp {
 
     document.body.appendChild(modal);
 
-    modal.querySelector("#close-login-modal").addEventListener("click", () => modal.remove());
-    modal.querySelector("#btn-retry-google").addEventListener("click", () => {
-      modal.remove();
-      this.handleGoogleLogin();
+    const closeModal = () => modal.remove();
+    modal.querySelector("#modal-auth-close").addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+
+    const feedback = modal.querySelector("#modal-auth-feedback");
+    const tabIn = modal.querySelector("#modal-tab-signin");
+    const tabUp = modal.querySelector("#modal-tab-signup");
+    const formIn = modal.querySelector("#modal-form-signin");
+    const formUp = modal.querySelector("#modal-form-signup");
+    const formRes = modal.querySelector("#modal-form-reset");
+    const linkForgot = modal.querySelector("#modal-link-forgot");
+    const linkBack = modal.querySelector("#modal-link-back");
+    const googleBtn = modal.querySelector("#btn-modal-google");
+
+    const setMsg = (text, isErr = true) => {
+      feedback.className = `auth-feedback-box ${isErr ? 'error' : 'success'}`;
+      feedback.textContent = text;
+    };
+
+    const clearMsg = () => {
+      feedback.className = "auth-feedback-box";
+      feedback.textContent = "";
+    };
+
+    tabIn.addEventListener("click", () => {
+      tabIn.classList.add("active");
+      tabUp.classList.remove("active");
+      formIn.style.display = "block";
+      formUp.style.display = "none";
+      formRes.style.display = "none";
+      clearMsg();
     });
-    modal.addEventListener("click", (e) => { if (e.target === modal) modal.remove(); });
+
+    tabUp.addEventListener("click", () => {
+      tabUp.classList.add("active");
+      tabIn.classList.remove("active");
+      formUp.style.display = "block";
+      formIn.style.display = "none";
+      formRes.style.display = "none";
+      clearMsg();
+    });
+
+    linkForgot.addEventListener("click", (e) => {
+      e.preventDefault();
+      tabIn.classList.remove("active");
+      tabUp.classList.remove("active");
+      formIn.style.display = "none";
+      formUp.style.display = "none";
+      formRes.style.display = "block";
+      clearMsg();
+    });
+
+    linkBack.addEventListener("click", (e) => {
+      e.preventDefault();
+      tabIn.click();
+    });
+
+    formIn.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearMsg();
+      const email = modal.querySelector("#modal-signin-email").value.trim();
+      const pass = modal.querySelector("#modal-signin-password").value;
+      const btn = modal.querySelector("#btn-modal-signin");
+      try {
+        btn.disabled = true;
+        btn.innerHTML = "<span>Signing in...</span>";
+        await firebaseService.loginWithEmail(email, pass);
+        closeModal();
+      } catch (err) {
+        setMsg(this.formatAuthError(err), true);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = "<span>Sign In</span>";
+      }
+    });
+
+    formUp.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearMsg();
+      const name = modal.querySelector("#modal-signup-name").value.trim();
+      const email = modal.querySelector("#modal-signup-email").value.trim();
+      const pass = modal.querySelector("#modal-signup-password").value;
+      const btn = modal.querySelector("#btn-modal-signup");
+      try {
+        btn.disabled = true;
+        btn.innerHTML = "<span>Creating account...</span>";
+        const res = await firebaseService.signupWithEmail(name, email, pass);
+        if (res.verificationSent) {
+          setMsg(`Account created! A confirmation verification link has been sent to ${email}.`, false);
+        }
+        setTimeout(() => closeModal(), 1800);
+      } catch (err) {
+        setMsg(this.formatAuthError(err), true);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = "<span>Create Account</span>";
+      }
+    });
+
+    formRes.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearMsg();
+      const email = modal.querySelector("#modal-reset-email").value.trim();
+      const btn = modal.querySelector("#btn-modal-reset");
+      try {
+        btn.disabled = true;
+        btn.innerHTML = "<span>Sending reset link...</span>";
+        await firebaseService.resetPassword(email);
+        setMsg(`Password reset link dispatched to ${email}! Please check your email inbox.`, false);
+      } catch (err) {
+        setMsg(this.formatAuthError(err), true);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = "<span>Send Password Reset Email</span>";
+      }
+    });
+
+    googleBtn.addEventListener("click", async () => {
+      try {
+        await firebaseService.loginWithGoogle();
+        closeModal();
+      } catch (err) {
+        if (err.message === "POPUP_CLOSED") return;
+        setMsg(this.formatAuthError(err), true);
+      }
+    });
+  }
+
+  formatAuthError(err) {
+    if (!err) return "An unexpected error occurred.";
+    const code = err.code || err.message || "";
+    if (code.includes("email-already-in-use")) {
+      return "This email address is already registered. Please sign in.";
+    }
+    if (code.includes("invalid-credential") || code.includes("wrong-password") || code.includes("user-not-found")) {
+      return "Invalid email or password. Please verify your credentials.";
+    }
+    if (code.includes("weak-password")) {
+      return "Password must be at least 6 characters in length.";
+    }
+    if (code.includes("invalid-email")) {
+      return "Please enter a valid student email address.";
+    }
+    if (code.includes("too-many-requests")) {
+      return "Access temporarily locked due to multiple failed attempts. Please try again in a few moments.";
+    }
+    if (code.includes("network-request-failed")) {
+      return "Network connection issue. Please check your internet connection.";
+    }
+    return err.message || "Authentication failed. Please try again.";
+  }
+
+  async handleGoogleLogin() {
+    try {
+      await firebaseService.loginWithGoogle();
+    } catch (err) {
+      if (err.message === "POPUP_CLOSED") return;
+      alert(this.formatAuthError(err));
+    }
   }
 
 

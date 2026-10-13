@@ -9,6 +9,11 @@ import {
   getAuth, 
   GoogleAuthProvider, 
   signInWithPopup, 
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  updateProfile,
   signOut, 
   onAuthStateChanged 
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
@@ -60,9 +65,10 @@ class FirebaseService {
         if (user) {
           this.currentUser = {
             uid: user.uid,
-            displayName: user.displayName || "resynk Student",
+            displayName: user.displayName || user.email.split("@")[0],
             email: user.email,
-            photoURL: user.photoURL || "assets/avatar-default.svg",
+            emailVerified: user.emailVerified,
+            photoURL: user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || user.email)}&background=D4AF37&color=08090C&bold=true`,
             isFirebaseUser: true
           };
           localStorage.setItem("resynk_student_session", JSON.stringify(this.currentUser));
@@ -108,7 +114,8 @@ class FirebaseService {
         uid: user.uid,
         displayName: user.displayName || "resynk Student",
         email: user.email,
-        photoURL: user.photoURL || "assets/avatar-default.svg",
+        emailVerified: user.emailVerified,
+        photoURL: user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || user.email)}&background=D4AF37&color=08090C&bold=true`,
         isFirebaseUser: true
       };
       localStorage.setItem("resynk_student_session", JSON.stringify(this.currentUser));
@@ -123,7 +130,6 @@ class FirebaseService {
       const isPopupBlocked = error.code === "auth/popup-blocked";
 
       if (isConfigNotFound || isUnauthorizedDomain || isPopupBlocked) {
-        // Return structured error for graceful modal
         const err = new Error(
           isConfigNotFound 
             ? "FIREBASE_PROVIDER_DISABLED"
@@ -139,6 +145,103 @@ class FirebaseService {
       
       throw error;
     }
+  }
+
+  /**
+   * Email & Password Login
+   */
+  async loginWithEmail(email, password) {
+    if (!this.auth) {
+      throw new Error("Firebase Auth is not ready.");
+    }
+
+    try {
+      const cred = await signInWithEmailAndPassword(this.auth, email, password);
+      const user = cred.user;
+      this.currentUser = {
+        uid: user.uid,
+        displayName: user.displayName || user.email.split("@")[0],
+        email: user.email,
+        emailVerified: user.emailVerified,
+        photoURL: user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || user.email)}&background=D4AF37&color=08090C&bold=true`,
+        isFirebaseUser: true
+      };
+      localStorage.setItem("resynk_student_session", JSON.stringify(this.currentUser));
+      this.notifyAuthSubscribers(this.currentUser);
+      return this.currentUser;
+    } catch (error) {
+      console.error("Email login error:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Email & Password Sign Up with Automatic Verification Email Dispatch
+   * (Matches Firebase Email Address Verification template)
+   */
+  async signupWithEmail(name, email, password) {
+    if (!this.auth) {
+      throw new Error("Firebase Auth is not ready.");
+    }
+
+    try {
+      const cred = await createUserWithEmailAndPassword(this.auth, email, password);
+      const user = cred.user;
+
+      if (name && name.trim()) {
+        try {
+          await updateProfile(user, { displayName: name.trim() });
+        } catch (pErr) {
+          console.warn("Update profile warning:", pErr);
+        }
+      }
+
+      // Send confirmation email to verify student address (Firebase template)
+      let verificationSent = false;
+      try {
+        await sendEmailVerification(user);
+        verificationSent = true;
+      } catch (vErr) {
+        console.warn("Verification email dispatch notice:", vErr);
+      }
+
+      this.currentUser = {
+        uid: user.uid,
+        displayName: (name && name.trim()) || user.email.split("@")[0],
+        email: user.email,
+        emailVerified: false,
+        photoURL: `https://ui-avatars.com/api/?name=${encodeURIComponent(name || user.email)}&background=D4AF37&color=08090C&bold=true`,
+        isFirebaseUser: true
+      };
+      localStorage.setItem("resynk_student_session", JSON.stringify(this.currentUser));
+      this.notifyAuthSubscribers(this.currentUser);
+      return { user: this.currentUser, verificationSent };
+    } catch (error) {
+      console.error("Email signup error:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Send Password Reset Email (Matches Firebase Password Reset template)
+   */
+  async resetPassword(email) {
+    if (!this.auth) {
+      throw new Error("Firebase Auth is not ready.");
+    }
+    await sendPasswordResetEmail(this.auth, email);
+    return true;
+  }
+
+  /**
+   * Resend Email Verification to Current Authenticated User
+   */
+  async resendVerificationEmail() {
+    if (!this.auth || !this.auth.currentUser) {
+      throw new Error("No active student session found to send verification email.");
+    }
+    await sendEmailVerification(this.auth.currentUser);
+    return true;
   }
 
 
