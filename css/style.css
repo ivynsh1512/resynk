@@ -2359,10 +2359,35 @@ textarea.form-control {
   .resynk-courses-section { padding: 60px 0; }
   .section-title { font-size: 1.7rem; }
 
-  /* Nav actions: hide auth on mobile, show only hamburger */
-  .nav-actions { gap: 10px; }
+  /* Nav actions: compact profile on mobile */
+  .nav-actions { gap: 8px; }
   .btn-google-login span { display: none; }
   .btn-google-login { padding: 8px 12px; }
+  .user-profile-badge {
+    padding: 3px 8px 3px 4px;
+    gap: 6px;
+  }
+  .user-status {
+    display: none !important;
+  }
+  .user-name {
+    font-size: 0.78rem;
+    max-width: 75px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .btn-signout svg {
+    width: 14px;
+    height: 14px;
+  }
+  .brand-logo .logo-brand-img {
+    width: 34px;
+    height: 34px;
+  }
+  .brand-logo .logo-title {
+    font-size: 1.25rem;
+  }
 
   /* Portfolio */
   .portfolio-item-grid { grid-template-columns: 1fr; }

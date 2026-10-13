@@ -1,24 +1,19 @@
 /**
- * resynk — High-Security DRM & Studio-Grade Video Player Controller
+ * resynk — High-Security DRM & Studio-Grade Responsive Video Player Controller
  * 
  * Features:
- * 1. Bespoke Custom Player Controls:
- *    - Custom Play/Pause & Center Ripple Overlay
- *    - Interactive Scrubber Timeline with Buffer Bar & Timestamp Hover Tooltip
- *    - Quick Scrub (-10s / +10s)
- *    - Volume Slider & Mute Toggle
- *    - Playback Speed Cycler (0.75x – 2x)
- *    - Container-Level Fullscreen (Preserves DRM watermarks & overlays in fullscreen)
- *    - Auto-hiding controls during playback with instant mouse/touch wake
- *    - Full Keyboard Accessibility (Space, K, Arrows, M, F)
+ * 1. Mobile-Responsive Custom Player:
+ *    - Fluid 16:9 widescreen presentation (Zero letterboxing)
+ *    - Tap-to-wake & auto-hiding controls (3s inactivity)
+ *    - Mobile-optimized controls row (Play, Jump 10s, Volume, Time, Speed, Fullscreen)
+ *    - Container-level & mobile orientation fullscreen support
  * 2. High-Security DRM & Forensic Protections:
- *    - Dynamic Moving Forensic Watermark (User identity + Session ID + Live Clock)
- *    - Anti-Cropping Forensic Micro-Stamps in Corners
- *    - Window Blur & Tab Switch Auto-Blackout Shield
- *    - Hotkey Interception (PrintScreen, F12, Ctrl+Shift+I, Ctrl+U, Ctrl+S, Ctrl+P)
- *    - Context Menu & Video Direct-Save Blocking (pointer-events guard)
- *    - Screen Capture API Interception (getDisplayMedia guard)
- *    - DevTools Anomaly Detection
+ *    - Transparent interaction shield barrier (Prevents direct video tag access, context menu, drag-to-download)
+ *    - Streamlined, non-intrusive dynamic moving forensic watermark (User Email + Clock + Session Hash)
+ *    - Corner forensic micro-stamps to defeat cropped screen recordings
+ *    - Window blur & tab switch auto-blackout shield (OBS, Snipping Tool, Task Switch)
+ *    - Keyboard piracy interception (PrintScreen, F12, Ctrl+S, Ctrl+U, Ctrl+Shift+I)
+ *    - Screen Capture API interception (getDisplayMedia guard)
  */
 
 export class DRMGuard {
@@ -65,20 +60,23 @@ export class DRMGuard {
     this.videoElement.setAttribute("controlsList", "nodownload noplaybackrate noremoteplayback");
     this.videoElement.setAttribute("disablePictureInPicture", "true");
     this.videoElement.setAttribute("playsinline", "true");
+    this.videoElement.setAttribute("webkit-playsinline", "true");
+    this.videoElement.setAttribute("draggable", "false");
     this.videoElement.oncontextmenu = (e) => {
       e.preventDefault();
-      this.showToast("Right-click context menu is disabled for protected content.");
+      this.showToast("Right-click menu is protected on resynk.");
       return false;
     };
   }
 
   /* ==========================================================
-     CUSTOM PLAYER CONTROLS IMPLEMENTATION
+     CUSTOM PLAYER CONTROLS & MOBILE TOUCH INTERACTION
      ========================================================== */
   setupCustomControls() {
     if (!this.containerElement || !this.videoElement) return;
 
     // Elements
+    const barrier = this.containerElement.querySelector("#video-shield-barrier");
     const centerPlayBtn = this.containerElement.querySelector("#btn-player-center-play");
     const playPauseBtn = this.containerElement.querySelector("#ctrl-play-pause");
     const rewindBtn = this.containerElement.querySelector("#ctrl-rewind-10");
@@ -118,6 +116,26 @@ export class DRMGuard {
       }
     };
 
+    // Click / Tap on Shield Barrier (Direct screen interaction)
+    if (barrier) {
+      barrier.addEventListener("click", () => {
+        const isHidden = this.containerElement.classList.contains("controls-hidden");
+        if (isHidden) {
+          // If controls were hidden, wake them up
+          this.resetInactivityTimer(false);
+        } else {
+          // If controls are visible, toggle playback
+          togglePlay();
+        }
+      });
+
+      // Mobile touch interaction
+      barrier.addEventListener("touchstart", (e) => {
+        // Prevent default touch callout
+        this.resetInactivityTimer(false);
+      }, { passive: true });
+    }
+
     if (centerPlayBtn) centerPlayBtn.addEventListener("click", togglePlay);
     if (playPauseBtn) playPauseBtn.addEventListener("click", togglePlay);
 
@@ -141,7 +159,7 @@ export class DRMGuard {
       }
 
       if (isPaused) {
-        this.resetInactivityTimer(true); // Keep controls visible when paused
+        this.resetInactivityTimer(true);
       } else {
         this.resetInactivityTimer(false);
       }
@@ -164,11 +182,12 @@ export class DRMGuard {
         playedBar.style.width = `${pct}%`;
       }
 
-      // Update buffer
       if (bufferedBar && duration > 0 && this.videoElement.buffered.length > 0) {
-        const bufferedEnd = this.videoElement.buffered.end(this.videoElement.buffered.length - 1);
-        const buffPct = Math.min(100, (bufferedEnd / duration) * 100);
-        bufferedBar.style.width = `${buffPct}%`;
+        try {
+          const bufferedEnd = this.videoElement.buffered.end(this.videoElement.buffered.length - 1);
+          const buffPct = Math.min(100, (bufferedEnd / duration) * 100);
+          bufferedBar.style.width = `${buffPct}%`;
+        } catch (e) {}
       }
     };
 
@@ -180,7 +199,7 @@ export class DRMGuard {
     if (timelineWrapper) {
       const seekFromPosition = (e) => {
         const rect = timelineWrapper.getBoundingClientRect();
-        const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+        const clientX = (e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX) || 0;
         const pos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
         const duration = this.videoElement.duration || 0;
         if (duration > 0) {
@@ -221,9 +240,10 @@ export class DRMGuard {
         }
       });
 
-      // Touch scrubber support
+      // Mobile Touch Scrubbing
       timelineWrapper.addEventListener("touchstart", (e) => {
         this.isScrubbing = true;
+        this.resetInactivityTimer(true);
         seekFromPosition(e);
       }, { passive: true });
 
@@ -235,6 +255,7 @@ export class DRMGuard {
 
       timelineWrapper.addEventListener("touchend", () => {
         this.isScrubbing = false;
+        this.resetInactivityTimer(false);
       });
     }
 
@@ -242,6 +263,7 @@ export class DRMGuard {
     if (rewindBtn) {
       rewindBtn.addEventListener("click", () => {
         this.videoElement.currentTime = Math.max(0, this.videoElement.currentTime - 10);
+        this.resetInactivityTimer(false);
       });
     }
 
@@ -249,6 +271,7 @@ export class DRMGuard {
       forwardBtn.addEventListener("click", () => {
         const dur = this.videoElement.duration || 0;
         this.videoElement.currentTime = Math.min(dur, this.videoElement.currentTime + 10);
+        this.resetInactivityTimer(false);
       });
     }
 
@@ -277,6 +300,7 @@ export class DRMGuard {
           this.videoElement.muted = true;
         }
         updateVolumeUI();
+        this.resetInactivityTimer(false);
       });
     }
 
@@ -295,6 +319,7 @@ export class DRMGuard {
       speedBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         speedDropdown.classList.toggle("open");
+        this.resetInactivityTimer(true);
       });
 
       speedDropdown.querySelectorAll("button").forEach(btn => {
@@ -306,6 +331,7 @@ export class DRMGuard {
           speedDropdown.querySelectorAll("button").forEach(b => b.classList.remove("active"));
           btn.classList.add("active");
           speedDropdown.classList.remove("open");
+          this.resetInactivityTimer(false);
         });
       });
 
@@ -314,15 +340,24 @@ export class DRMGuard {
       });
     }
 
-    // Fullscreen via Container-Level API (Protects Watermark & Overlays)
+    // Fullscreen via Container-Level API (Mobile & Desktop Resilient)
     if (fullscreenBtn) {
       const toggleFullscreen = () => {
         const isFS = document.fullscreenElement || document.webkitFullscreenElement;
         if (!isFS) {
           if (this.containerElement.requestFullscreen) {
-            this.containerElement.requestFullscreen();
+            this.containerElement.requestFullscreen().catch(() => {
+              if (this.videoElement.webkitEnterFullscreen) this.videoElement.webkitEnterFullscreen();
+            });
           } else if (this.containerElement.webkitRequestFullscreen) {
             this.containerElement.webkitRequestFullscreen();
+          } else if (this.videoElement.webkitEnterFullscreen) {
+            this.videoElement.webkitEnterFullscreen();
+          }
+
+          // Mobile orientation auto-rotate if allowed
+          if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock("landscape").catch(() => {});
           }
         } else {
           if (document.exitFullscreen) {
@@ -330,7 +365,11 @@ export class DRMGuard {
           } else if (document.webkitExitFullscreen) {
             document.webkitExitFullscreen();
           }
+          if (screen.orientation && screen.orientation.unlock) {
+            screen.orientation.unlock();
+          }
         }
+        this.resetInactivityTimer(false);
       };
 
       fullscreenBtn.addEventListener("click", toggleFullscreen);
@@ -350,9 +389,12 @@ export class DRMGuard {
     }
 
     // Inactivity Auto-Hide Logic
-    this.containerElement.addEventListener("mousemove", () => {
+    const wakeControls = () => {
       this.resetInactivityTimer(false);
-    });
+    };
+
+    this.containerElement.addEventListener("mousemove", wakeControls);
+    this.containerElement.addEventListener("touchstart", wakeControls, { passive: true });
 
     this.containerElement.addEventListener("mouseleave", () => {
       if (!this.videoElement.paused && !this.videoElement.ended) {
@@ -360,34 +402,28 @@ export class DRMGuard {
       }
     });
 
-    // Keyboard Shortcuts (Space, Left/Right, Up/Down, M, F)
+    // Keyboard Shortcuts
     window.addEventListener("keydown", (e) => {
-      // Ignore if user is currently typing in an input or textarea
       const tag = (e.target.tagName || "").toLowerCase();
       if (tag === "input" || tag === "textarea" || e.target.isContentEditable) {
         return;
       }
-
-      // Check if container is in viewport or user is on portal
       if (!this.containerElement) return;
 
       const key = e.key.toLowerCase();
 
-      // Space or 'k' = Play/Pause
       if (e.code === "Space" || key === "k") {
         e.preventDefault();
         togglePlay();
         return;
       }
 
-      // ArrowLeft or 'j' = Rewind 10s
       if (e.code === "ArrowLeft" || key === "j") {
         e.preventDefault();
         this.videoElement.currentTime = Math.max(0, this.videoElement.currentTime - 10);
         return;
       }
 
-      // ArrowRight or 'l' = Forward 10s
       if (e.code === "ArrowRight" || key === "l") {
         e.preventDefault();
         const dur = this.videoElement.duration || 0;
@@ -395,7 +431,6 @@ export class DRMGuard {
         return;
       }
 
-      // ArrowUp = Volume Up
       if (e.code === "ArrowUp") {
         e.preventDefault();
         this.videoElement.volume = Math.min(1, this.videoElement.volume + 0.1);
@@ -404,7 +439,6 @@ export class DRMGuard {
         return;
       }
 
-      // ArrowDown = Volume Down
       if (e.code === "ArrowDown") {
         e.preventDefault();
         this.videoElement.volume = Math.max(0, this.videoElement.volume - 0.1);
@@ -412,7 +446,6 @@ export class DRMGuard {
         return;
       }
 
-      // 'm' = Mute / Unmute
       if (key === "m") {
         e.preventDefault();
         this.videoElement.muted = !this.videoElement.muted;
@@ -420,7 +453,6 @@ export class DRMGuard {
         return;
       }
 
-      // 'f' = Fullscreen Toggle
       if (key === "f") {
         e.preventDefault();
         if (fullscreenBtn) fullscreenBtn.click();
@@ -447,7 +479,7 @@ export class DRMGuard {
   }
 
   /* ==========================================================
-     DRM WATERMARKS & SECURITY OVERLAYS
+     DRM WATERMARKS & COMFORTABLE FORENSIC STAMPS
      ========================================================== */
   createWatermark() {
     if (!this.containerElement) return;
@@ -459,10 +491,14 @@ export class DRMGuard {
     watermark.setAttribute("aria-hidden", "true");
     watermark.innerHTML = `
       <div class="watermark-inner">
-        <span class="watermark-brand">resynk ENCRYPTED</span>
-        <span class="watermark-user">${this.getUserIdentifier()}</span>
-        <span class="watermark-clock">00:00:00</span>
-        <span class="watermark-meta">ID: #${this.sessionId} • DO NOT DISTRIBUTE</span>
+        <div class="watermark-header">
+          <span class="watermark-brand">resynk ENCRYPTED</span>
+          <span class="watermark-clock">00:00:00</span>
+        </div>
+        <div class="watermark-body">
+          <span class="watermark-user">${this.getUserIdentifier()}</span>
+          <span class="watermark-meta">#${this.sessionId}</span>
+        </div>
       </div>
     `;
 
@@ -481,15 +517,15 @@ export class DRMGuard {
     shield.innerHTML = `
       <div class="shield-card">
         <div class="shield-icon">
-          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>
         </div>
         <h3>Playback Suspended for Security</h3>
-        <p>Window focus was lost or screen capture / recording activity was detected. Return to this tab to resume playback.</p>
+        <p>Window focus was lost, or screen recording / capture activity was detected. Return to this tab to resume your lecture.</p>
         <button type="button" class="btn-resume-playback">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <polygon points="5 3 19 12 5 21 5 3"></polygon>
           </svg>
           Resume Playback
@@ -510,7 +546,7 @@ export class DRMGuard {
     if (!this.containerElement) return;
     const stampBr = this.containerElement.querySelector("#forensic-stamp-br");
     if (stampBr) {
-      stampBr.textContent = `UID: ${this.getUserIdentifier()} • #${this.sessionId}`;
+      stampBr.textContent = `UID: #${this.sessionId}`;
     }
   }
 
@@ -546,36 +582,43 @@ export class DRMGuard {
   startDynamicWatermark() {
     if (this.watermarkInterval) clearInterval(this.watermarkInterval);
     
-    // Shift position unpredictably every 4.5 to 7.5 seconds
+    // Shift position unpredictably every 6 to 9 seconds to safe perimeter zones
     const move = () => {
       if (!this.watermarkElement || !this.containerElement) return;
       const bounds = this.containerElement.getBoundingClientRect();
       const watermarkBounds = this.watermarkElement.getBoundingClientRect();
 
-      const maxX = Math.max(20, bounds.width - watermarkBounds.width - 40);
-      const maxY = Math.max(20, bounds.height - watermarkBounds.height - 70);
+      const maxX = Math.max(10, bounds.width - watermarkBounds.width - 20);
+      const maxY = Math.max(10, bounds.height - watermarkBounds.height - 55);
 
-      const randomX = Math.floor(Math.random() * maxX) + 20;
-      const randomY = Math.floor(Math.random() * maxY) + 20;
-      const randomOpacity = (Math.random() * 0.22 + 0.38).toFixed(2); // 0.38 to 0.60
+      // Random corner / margin bias so it doesn't block center focus
+      const safeQuadrants = [
+        { x: Math.floor(Math.random() * (maxX * 0.4)) + 10, y: Math.floor(Math.random() * (maxY * 0.35)) + 10 },
+        { x: Math.floor(Math.random() * (maxX * 0.4) + (maxX * 0.55)), y: Math.floor(Math.random() * (maxY * 0.35)) + 10 },
+        { x: Math.floor(Math.random() * (maxX * 0.4)) + 10, y: Math.floor(Math.random() * (maxY * 0.35) + (maxY * 0.55)) },
+        { x: Math.floor(Math.random() * (maxX * 0.4) + (maxX * 0.55)), y: Math.floor(Math.random() * (maxY * 0.35) + (maxY * 0.55)) }
+      ];
 
-      this.watermarkElement.style.transform = `translate(${randomX}px, ${randomY}px)`;
+      const chosen = safeQuadrants[Math.floor(Math.random() * safeQuadrants.length)];
+      const randomOpacity = (Math.random() * 0.16 + 0.26).toFixed(2); // 0.26 to 0.42 translucent
+
+      this.watermarkElement.style.transform = `translate(${chosen.x}px, ${chosen.y}px)`;
       this.watermarkElement.style.opacity = randomOpacity;
     };
 
     move();
-    this.watermarkInterval = setInterval(move, 5000);
+    this.watermarkInterval = setInterval(move, 7000);
   }
 
   bindPlayerEvents() {
-    // Detect visibility changes (tab switch, desktop switch)
+    // Detect visibility changes (tab switch, desktop switch, notification drawer)
     document.addEventListener("visibilitychange", () => {
       if (document.hidden && this.videoElement && !this.videoElement.paused) {
-        this.triggerSecurityShield("Tab switched or hidden");
+        this.triggerSecurityShield("Application window hidden or minimized");
       }
     });
 
-    // Detect window blur (user clicking into OBS, Snipping tool, or secondary window)
+    // Detect window blur (OBS / Snipping Tool / external recording window focus)
     window.addEventListener("blur", () => {
       if (this.videoElement && !this.videoElement.paused) {
         this.triggerSecurityShield("Application window lost focus");
@@ -629,13 +672,15 @@ export class DRMGuard {
       const ctrl = e.ctrlKey || e.metaKey;
       const shift = e.shiftKey;
 
-      // PrintScreen detection
+      // PrintScreen detection & clipboard scrub
       if (key === "PrintScreen") {
         e.preventDefault();
         this.triggerSecurityShield("PrintScreen capture shortcut intercepted");
         this.showToast("Screen captures are disabled on resynk.");
         try {
-          navigator.clipboard.writeText("");
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText("");
+          }
         } catch (err) {}
         return false;
       }
@@ -710,7 +755,7 @@ export class DRMGuard {
     }
     toast.innerHTML = `
       <div class="toast-content">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
           <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
         </svg>
@@ -721,7 +766,7 @@ export class DRMGuard {
     if (this.toastTimeout) clearTimeout(this.toastTimeout);
     this.toastTimeout = setTimeout(() => {
       toast.classList.remove("show");
-    }, 3500);
+    }, 3200);
   }
 
   destroy() {

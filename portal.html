@@ -13,8 +13,8 @@
   <link rel="apple-touch-icon" href="assets/favicon.svg">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/style.css?v=2.2">
-  <link rel="stylesheet" href="css/player.css?v=2.2">
+  <link rel="stylesheet" href="css/style.css?v=2.3">
+  <link rel="stylesheet" href="css/player.css?v=2.3">
 </head>
 <body>
 
@@ -201,10 +201,15 @@
                     controlsList="nodownload noplaybackrate noremoteplayback" 
                     disablePictureInPicture 
                     playsinline
+                    draggable="false"
+                    oncontextmenu="return false;"
                   >
                     <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
                     Your browser does not support HTML5 video.
                   </video>
+
+                  <!-- Transparent Click / Tap Interaction Barrier (Shields Video from Downloaders) -->
+                  <div class="resynk-video-shield-barrier" id="video-shield-barrier"></div>
 
                   <!-- Big Center Play/Pause Ripple Button -->
                   <button type="button" class="player-center-play-btn" id="btn-player-center-play" aria-label="Play Video">
