@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Student Classroom Portal — Protected Masterclass Streaming | resynk</title>
+  <meta name="description" content="Dedicated student learning portal for resynk Academy. Watch protected Guitar, Keyboard, and Fine Arts masterclasses with dynamic DRM watermarking and 90-day access validity.">
+  <link rel="canonical" href="http://localhost:3000/portal">
+
+  <!-- Proper Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/logo.jpg">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/player.css">
+</head>
+<body>
+
+  <!-- ==========================================================
+       NAVIGATION BAR
+       ========================================================== -->
+  <header class="resynk-navbar">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo" aria-label="resynk Academy Home">
+        <img src="assets/logo.jpg" alt="resynk Logo" class="logo-brand-img">
+        <div class="logo-text-group">
+          <span class="logo-title">re<span>synk</span></span>
+          <span class="logo-sub">D Paul's Academy • Student Portal</span>
+        </div>
+      </a>
+
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-menu">
+          <li><a href="/" class="nav-link">Home</a></li>
+          <li><a href="/courses" class="nav-link">Courses &amp; Syllabus</a></li>
+          <li><a href="/portfolio" class="nav-link">The Founder</a></li>
+          <li><a href="/contact" class="nav-link">Contact</a></li>
+          <li><a href="/portal" class="nav-link active highlight-portal">Student Portal</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <div id="nav-auth-container">
+          <!-- Populated by Firebase Service -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================================
+         AUTHENTICATION GATE (SHOWN WHEN LOGGED OUT)
+         ========================================================== -->
+    <div class="container" id="portal-auth-gate" style="display: none;">
+      <div class="portal-auth-gate-card">
+        <div class="portal-auth-icon">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <h2>Student Portal Access Gate</h2>
+        <p>
+          Please sign in to access your enrolled lectures, 90-day validity counter, and DRM-protected video streaming classroom.
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 14px; max-width: 340px; margin: 0 auto 20px auto;">
+          <button type="button" class="btn-primary" id="btn-portal-google-login" style="justify-content: center; width: 100%;">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+            </svg>
+            <span>Sign In with Google</span>
+          </button>
+
+          <button type="button" class="btn-secondary" id="btn-portal-instant-login" style="justify-content: center; width: 100%;">
+            <span>Sign in with Student ID</span>
+          </button>
+        </div>
+
+        <span style="font-size: 0.78rem; color: var(--text-muted); display: block;">
+          Protected by Dynamic Forensic Moving Watermarking &amp; TLS Encryption.
+        </span>
+      </div>
+    </div>
+
+    <!-- ==========================================================
+         STUDENT CLASSROOM (SHOWN WHEN LOGGED IN)
+         ========================================================== -->
+    <div id="portal-authenticated-area">
+      <div class="portal-hero-bar">
+        <div class="container portal-welcome-grid">
+          <div class="portal-student-title">
+            <span class="section-tag">Student Classroom Portal</span>
+            <h1 id="portal-welcome-heading">Welcome, Student</h1>
+            <p>Access your enrolled lectures with full DRM forensic protection anytime during your 90-day window.</p>
+          </div>
+
+          <div class="classroom-validity-banner">
+            <div class="validity-timer-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div class="validity-timer-text" id="validity-timer-display">
+              <span class="validity-timer-label">Access Status</span>
+              <span class="validity-timer-val">Checking active validity...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Player & Sidebar Section -->
+      <section class="resynk-classroom-section" style="border: none; background: transparent; padding: 20px 0 80px 0;">
+        <div class="container">
+          <div class="classroom-grid">
+            <!-- Left Column: Protected Video Player & Notes -->
+            <div class="classroom-player-column">
+              <div class="resynk-player-container" id="classroom-player-wrapper">
+                <div class="resynk-player-frame">
+                  <video 
+                    id="classroom-video" 
+                    preload="metadata" 
+                    controlsList="nodownload noplaybackrate noremoteplayback" 
+                    disablePictureInPicture 
+                    playsinline 
+                    controls
+                  >
+                    <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                    Your browser does not support HTML5 video.
+                  </video>
+
+                  <!-- Dynamic Locked Overlay for Non-Subscribers -->
+                  <div class="resynk-locked-screen" id="classroom-locked-overlay" style="display: none;">
+                    <!-- Injected dynamically by main.js -->
+                  </div>
+                </div>
+
+                <!-- Player Security Bar -->
+                <div class="resynk-player-security-bar">
+                  <div class="security-indicator">
+                    <span class="pulse-dot"></span>
+                    <span>Dynamic Forensic Watermark: ACTIVE</span>
+                  </div>
+                  <div class="validity-countdown-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <span>90-Day Protected Token</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Current Lesson Info -->
+              <div class="lesson-info-card">
+                <div class="lesson-info-meta">
+                  <span class="lesson-tag" id="lesson-tag-display">Guitar • Lesson 1.1</span>
+                  <span>Mentor: Master Reynole (D Paul's Academy)</span>
+                </div>
+                <h3 class="lesson-title-display" id="lesson-title-display">Lecture 01: Anatomy, Tuning, String Physics &amp; The Golden Posture</h3>
+                <p class="lesson-notes-text" id="lesson-notes-display">
+                  Welcome to resynk. In this opening masterclass, we dissect guitar anatomy, proper fret hand thumb placement, and how to eliminate fret buzz from day one.
+                </p>
+              </div>
+            </div>
+
+            <!-- Right Column: Curriculum Playlist Sidebar -->
+            <div class="classroom-sidebar">
+              <div class="sidebar-header">
+                <h4>Classroom Syllabus</h4>
+                <select class="course-selector-dropdown" id="course-selector">
+                  <option value="guitar-mastery">Guitar Mastery</option>
+                  <option value="keyboard-mastery">Keyboard &amp; Theory</option>
+                  <option value="fine-arts-mastery">Fine Arts Studio</option>
+                </select>
+              </div>
+              <div class="sidebar-playlist" id="sidebar-playlist">
+                <!-- Dynamically populated lessons -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="resynk-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <img src="assets/logo.jpg" alt="resynk Logo" class="logo-brand-img">
+            <div class="logo-text-group">
+              <span class="logo-title">re<span>synk</span></span>
+              <span class="logo-sub">D Paul's Academy • Student Portal</span>
+            </div>
+          </div>
+          <p>Protected streaming classroom for verified students. Dynamic forensic watermarking safeguards all proprietary lectures.</p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Classroom</h5>
+          <ul class="footer-links">
+            <li><a href="/portal">Active Lecture</a></li>
+            <li><a href="/courses">Explore Other Disciplines</a></li>
+            <li><a href="/portfolio">Mentor Profile</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Security Policy</h5>
+          <ul class="footer-links">
+            <li><a href="#">Dynamic Forensic Watermarking</a></li>
+            <li><a href="#">Window Focus Auto-Blackout</a></li>
+            <li><a href="#">Non-Distributable Content</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Academy Support</h5>
+          <ul class="footer-links">
+            <li><span style="color: #CBD5E1;">D Paul’s Academy</span></li>
+            <li><span style="color: #94A3B8;">Kothanur, Bangalore</span></li>
+            <li><a href="tel:+919108396010" style="color: var(--brass-light); font-weight: 600;">+91 910 839 6010</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2014 &ndash; 2026 resynk • D Paul’s Academy. All Rights Reserved.</div>
+        <div>Protected by Dynamic Forensic Watermarking &amp; 90-Day Streaming Tokens.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCE588" />
+      <stop offset="50%" stop-color="#D4AF37" />
+      <stop offset="100%" stop-color="#997818" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#08090C"/>
+  <rect width="62" height="62" x="1" y="1" rx="15" fill="none" stroke="rgba(212,175,55,0.3)" stroke-width="1.5"/>
+  <!-- Guitar Headstock & Strings / Soundwave R mark -->
+  <path d="M32 10 L32 20 M28 12 L36 12 M27 16 L37 16 M29 20 L35 20" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round"/>
+  <!-- R Soundwave Body -->
+  <path d="M22 28 Q24 22 30 22 C36 22 39 25 39 29 C39 33 35 36 30 36 L24 36 L24 50 M30 36 L40 50" fill="none" stroke="url(#goldGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Resonance Wave -->
+  <path d="M14 36 Q18 30 22 36 Q26 42 30 36" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+  <path d="M38 36 Q42 30 46 36 Q50 42 54 36" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+</svg>

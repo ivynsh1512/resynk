@@ -1,0 +1,23 @@
+{
+  "name": "resynk",
+  "version": "1.0.0",
+  "description": "resynk — Official Academy for Guitar, Keyboard & Fine Arts",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "deploy": "wrangler deploy",
+    "d1:init": "wrangler d1 execute resynk-db --remote --file=./schema.sql"
+  },
+  "keywords": [
+    "music",
+    "guitar",
+    "keyboard",
+    "fine-arts",
+    "razorpay",
+    "drm",
+    "firebase"
+  ],
+  "author": "D Paul's Academy",
+  "license": "ISC"
+}

@@ -1,0 +1,12 @@
+.wrangler
+node_modules
+server.js
+schema.sql
+package.json
+package-lock.json
+start.bat
+README.md
+data
+worker.js
+wrangler.toml
+.assetsignore

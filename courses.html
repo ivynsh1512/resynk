@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Courses &amp; Curriculum — Guitar, Keyboard &amp; Fine Arts | resynk</title>
+  <meta name="description" content="Explore complete syllabi for Guitar Mastery, Keyboard &amp; Certified Music Theorem, and Fine Arts Studio at resynk Academy. 90-day streaming access via Razorpay.">
+  <link rel="canonical" href="http://localhost:3000/courses">
+
+  <!-- Proper Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/logo.jpg">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/player.css">
+</head>
+<body>
+
+  <!-- ==========================================================
+       NAVIGATION BAR
+       ========================================================== -->
+  <header class="resynk-navbar">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo" aria-label="resynk Academy Home">
+        <img src="assets/logo.jpg" alt="resynk Logo" class="logo-brand-img">
+        <div class="logo-text-group">
+          <span class="logo-title">re<span>synk</span></span>
+          <span class="logo-sub">D Paul's Academy • Since 2014</span>
+        </div>
+      </a>
+
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-menu">
+          <li><a href="/" class="nav-link">Home</a></li>
+          <li><a href="/courses" class="nav-link active">Courses &amp; Syllabus</a></li>
+          <li><a href="/portfolio" class="nav-link">The Founder</a></li>
+          <li><a href="/contact" class="nav-link">Contact</a></li>
+          <li>
+            <a href="/portal" class="nav-link highlight-portal">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <span>Student Portal</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <div id="nav-auth-container">
+          <!-- Auth Container -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Header -->
+    <section style="padding: 70px 0 40px 0; border-bottom: 1px solid var(--border-subtle); background: radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 70%);">
+      <div class="container" style="text-align: center; max-width: 780px;">
+        <span class="section-tag">Academic Catalog</span>
+        <h1 style="font-size: clamp(2.4rem, 4vw, 3.4rem); margin-bottom: 16px;">
+          Disciplines, Syllabi &amp; Tuition
+        </h1>
+        <p style="font-size: 1.1rem; color: var(--text-secondary); line-height: 1.6;">
+          Every masterclass is structured into chronological modules with direct mentor notes, practice guides, and an exact 3-month (90 days) streaming validity window upon Razorpay checkout.
+        </p>
+      </div>
+    </section>
+
+    <!-- Course Cards Grid & Filter -->
+    <section class="resynk-courses-section">
+      <div class="container">
+        <!-- Filter Tabs -->
+        <div class="courses-filter-tabs">
+          <button type="button" class="filter-btn active" data-category="all">All Disciplines</button>
+          <button type="button" class="filter-btn" data-category="guitar">Guitar Mastery</button>
+          <button type="button" class="filter-btn" data-category="keyboard">Keyboard &amp; Theory</button>
+          <button type="button" class="filter-btn" data-category="arts">Fine Arts Studio</button>
+          <button type="button" class="filter-btn" data-category="bundle">Triad Master Pass</button>
+        </div>
+
+        <!-- Dynamic Grid -->
+        <div class="courses-grid" id="courses-grid">
+          <!-- Populated by main.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Deep Syllabus Breakdown (Modules Accordion / Cards) -->
+    <section style="padding: 80px 0; background: #06070A; border-top: 1px solid var(--border-subtle);">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Curriculum Architecture</span>
+          <h2 class="section-title">What You Will Master in 90 Days</h2>
+          <p class="section-desc">A deep dive into our modular pedagogical roadmap across all disciplines.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
+          <!-- Guitar Roadmap -->
+          <div class="portfolio-item-card" id="guitar">
+            <div class="portfolio-item-header">
+              <div class="item-icon-badge">🎸</div>
+              <span class="item-tag">Guitar Curriculum</span>
+            </div>
+            <h4>Guitar Mastery: Acoustic &amp; Electric</h4>
+            <p style="margin-bottom: 16px;">24 Video Lectures • 16 Hours • Fingerstyle &amp; Soloing</p>
+            <ul class="school-list">
+              <li><strong>Module 1:</strong> Anatomy, Zero-Tension Posture &amp; Chromatic Spider</li>
+              <li><strong>Module 2:</strong> The Essential 8 Open Chords &amp; Anchor Transitions</li>
+              <li><strong>Module 3:</strong> Metronome Syncopation, Palm Muting &amp; Barre Chords</li>
+              <li><strong>Module 4:</strong> Travis Picking Polyphony &amp; Minor Pentatonic Soloing</li>
+            </ul>
+          </div>
+
+          <!-- Keyboard Roadmap -->
+          <div class="portfolio-item-card" id="keyboard">
+            <div class="portfolio-item-header">
+              <div class="item-icon-badge">🎹</div>
+              <span class="item-tag">Keyboard Curriculum</span>
+            </div>
+            <h4>Keyboard &amp; Comprehensive Music Theorem</h4>
+            <p style="margin-bottom: 16px;">28 Video Lectures • 18 Hours • Classical &amp; Modern Harmony</p>
+            <ul class="school-list">
+              <li><strong>Module 1:</strong> Piano Geography, Grand Staff &amp; 88-Key Spatial Awareness</li>
+              <li><strong>Module 2:</strong> Scale Geometry, Major/Minor Triads &amp; Interval Mathematics</li>
+              <li><strong>Module 3:</strong> Inversions, Smooth Voice Leading &amp; Diatonic Progressions</li>
+              <li><strong>Module 4:</strong> Left-Hand Arpeggio Accompaniments &amp; Ear Training Secrets</li>
+            </ul>
+          </div>
+
+          <!-- Fine Arts Roadmap -->
+          <div class="portfolio-item-card" id="arts">
+            <div class="portfolio-item-header">
+              <div class="item-icon-badge">🎨</div>
+              <span class="item-tag">Fine Arts Curriculum</span>
+            </div>
+            <h4>Fine Arts &amp; Creative Expression Studio</h4>
+            <p style="margin-bottom: 16px;">20 Video Lectures • 14 Hours • Sketching to Acrylics</p>
+            <ul class="school-list">
+              <li><strong>Module 1:</strong> Pencil Grading (2H–8B), Grip Mechanics &amp; 10-Step Value Scale</li>
+              <li><strong>Module 2:</strong> Light Physics, Core Shadows, Cast Shadows &amp; 3D Volume</li>
+              <li><strong>Module 3:</strong> 1 &amp; 2-Point Linear Perspective &amp; Architectural Form</li>
+              <li><strong>Module 4:</strong> The Loomis Head Method, Charcoal Smudging &amp; Canvas Acrylics</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section (AEO Optimized) -->
+    <section class="faq-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Frequently Answered</span>
+          <h2 class="section-title">Common Inquiries &amp; Answers</h2>
+          <p class="section-desc">Clear, direct answers for students and parents.</p>
+        </div>
+
+        <div class="faq-grid">
+          <div class="faq-card">
+            <h4>How does the 3-month (90 days) validity work?</h4>
+            <p>Your 90-day timer begins immediately upon successful payment via Razorpay. During these 90 days, you can log in to your Student Portal anytime, anywhere, on any device to stream lectures as often as you want.</p>
+          </div>
+
+          <div class="faq-card">
+            <h4>Can I download or screen-record the lectures?</h4>
+            <p>No. All lectures are protected under studio-grade DRM. Our player embeds dynamic forensic moving watermarks stamped with your verified email, session hash, and live clock. Screen-recording software and downloading are strictly blocked.</p>
+          </div>
+
+          <div class="faq-card">
+            <h4>What payment methods does Razorpay accept?</h4>
+            <p>Razorpay supports UPI (Google Pay, PhonePe, Paytm), Debit Cards, Credit Cards, Net Banking across all Indian banks, and international payment methods.</p>
+          </div>
+
+          <div class="faq-card">
+            <h4>Can beginners join these masterclasses?</h4>
+            <p>Yes. Every masterclass begins with fundamental ergonomics (posture, hand mechanics, line grading) before advancing progressively to intermediate and performance-grade pieces.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="resynk-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <img src="assets/logo.jpg" alt="resynk Logo" class="logo-brand-img">
+            <div class="logo-text-group">
+              <span class="logo-title">re<span>synk</span></span>
+              <span class="logo-sub">D Paul's Academy • Since 2014</span>
+            </div>
+          </div>
+          <p>An elite arts and music conservatory since 2014. Providing protected, master-led instruction across Guitar, Keyboard &amp; Music Theorem, and Fine Arts.</p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <ul class="footer-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/courses">Courses &amp; Tuition</a></li>
+            <li><a href="/portfolio">The Founder</a></li>
+            <li><a href="/portal">Student Portal</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Policies</h5>
+          <ul class="footer-links">
+            <li><a href="#">3-Month Validity Terms</a></li>
+            <li><a href="#">DRM &amp; Copyright Policy</a></li>
+            <li><a href="/contact">Support &amp; Inquiries</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Studio Location</h5>
+          <ul class="footer-links">
+            <li><span style="color: #CBD5E1;">D Paul’s Academy</span></li>
+            <li><span style="color: #94A3B8;">Kothanur, Bangalore 560077</span></li>
+            <li><a href="tel:+919108396010" style="color: var(--brass-light); font-weight: 600;">+91 910 839 6010</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2014 &ndash; 2026 resynk • D Paul’s Academy. All Rights Reserved.</div>
+        <div>Protected by Dynamic Forensic Watermarking &amp; 90-Day Streaming Tokens.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

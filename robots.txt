@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Allow: /courses
+Allow: /portfolio
+Allow: /contact
+Disallow: /api/
+
+# Sitemaps
+Sitemap: http://localhost:3000/sitemap.xml
