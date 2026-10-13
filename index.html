@@ -123,15 +123,16 @@
         </div>
       </a>
 
-      <nav aria-label="Primary Navigation">
-        <ul class="nav-menu">
+      <nav aria-label="Primary Navigation" id="primary-nav">
+        <ul class="nav-menu" id="nav-menu">
+          <button type="button" class="mobile-menu-close" id="btn-close-menu" aria-label="Close Menu">&#215;</button>
           <li><a href="/" class="nav-link active">Home</a></li>
-          <li><a href="/courses" class="nav-link">Courses &amp; Syllabus</a></li>
+          <li><a href="/courses" class="nav-link">Courses</a></li>
           <li><a href="/portfolio" class="nav-link">The Founder</a></li>
           <li><a href="/contact" class="nav-link">Contact</a></li>
           <li>
             <a href="/portal" class="nav-link highlight-portal">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                 <polygon points="5 3 19 12 5 21 5 3"></polygon>
               </svg>
               <span>Student Portal</span>
@@ -141,7 +142,6 @@
       </nav>
 
       <div class="nav-actions">
-        <!-- Auth Container (Populated dynamically) -->
         <div id="nav-auth-container">
           <button type="button" class="btn-google-login" id="btn-login-google">
             <svg width="18" height="18" viewBox="0 0 24 24">
@@ -150,12 +150,18 @@
               <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
               <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
             </svg>
-            <span>Student Sign In</span>
+            <span>Sign In</span>
           </button>
         </div>
+        <button type="button" class="btn-hamburger" id="btn-hamburger" aria-label="Open Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </div>
   </header>
+
 
   <main>
     <!-- ==========================================================

@@ -27,7 +27,6 @@ class ResynkApp {
     this.portalAuthArea = document.getElementById("portal-authenticated-area");
     this.portalWelcomeHeading = document.getElementById("portal-welcome-heading");
     this.btnPortalGoogleLogin = document.getElementById("btn-portal-google-login");
-    this.btnPortalInstantLogin = document.getElementById("btn-portal-instant-login");
 
     // Classroom Player DOM
     this.playerContainer = document.getElementById("classroom-player-wrapper");
@@ -54,6 +53,7 @@ class ResynkApp {
   async init() {
     this.checkProtocolEnvironment();
     this.setupAuthListener();
+    this.setupMobileMenu();
     this.renderCourses(this.activeCategory);
     this.setupCourseFilters();
     this.setupPortfolioTabs();
@@ -64,6 +64,37 @@ class ResynkApp {
       this.drmGuard.attachToPlayer(this.playerContainer, this.playerVideo);
       this.setupClassroom();
     }
+  }
+
+  setupMobileMenu() {
+    const navMenu   = document.getElementById('nav-menu');
+    const btnOpen   = document.getElementById('btn-hamburger');
+    const btnClose  = document.getElementById('btn-close-menu');
+
+    if (!navMenu || !btnOpen) return;
+
+    const openMenu = () => {
+      navMenu.classList.add('mobile-open');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeMenu = () => {
+      navMenu.classList.remove('mobile-open');
+      document.body.style.overflow = '';
+    };
+
+    btnOpen.addEventListener('click', openMenu);
+    if (btnClose) btnClose.addEventListener('click', closeMenu);
+
+    // Close on nav-link click (page navigation)
+    navMenu.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeMenu();
+    });
   }
 
   checkProtocolEnvironment() {
@@ -82,14 +113,9 @@ class ResynkApp {
      AUTHENTICATION & USER STATE
      ========================================================== */
   setupAuthListener() {
-    // Portal direct login buttons
+    // Portal Google login button
     if (this.btnPortalGoogleLogin) {
       this.btnPortalGoogleLogin.addEventListener("click", () => this.handleGoogleLogin());
-    }
-    if (this.btnPortalInstantLogin) {
-      this.btnPortalInstantLogin.addEventListener("click", () => {
-        firebaseService.loginAsStudent();
-      });
     }
 
     firebaseService.onAuth(async (user) => {
@@ -178,51 +204,41 @@ class ResynkApp {
     const existing = document.getElementById("login-fallback-modal");
     if (existing) existing.remove();
 
-    let noticeHeading = "Student Authentication";
-    let noticeText = "Sign in to access your course lectures and 3-month validity tokens.";
-
+    let noticeText = "Please try again or contact Master Reynole at +91 910 839 6010 for assistance.";
     if (errorCode === "FIREBASE_PROVIDER_DISABLED") {
-      noticeHeading = "Firebase Google Provider Setup Notice";
-      noticeText = "Google Sign-in is not yet toggled ON in your Firebase Console (Authentication &gt; Sign-in method &gt; Google).";
+      noticeText = "Google Sign-in is not yet enabled on this account. Please ensure your Firebase project has Google authentication activated.";
     } else if (errorCode === "UNAUTHORIZED_DOMAIN") {
-      noticeHeading = "Authorized Domain Setup Notice";
-      noticeText = "Add 'localhost' to Firebase Console &gt; Authentication &gt; Settings &gt; Authorized Domains.";
+      noticeText = "This domain is not yet authorized for Google Sign-in. Please contact the administrator.";
     }
 
     const modal = document.createElement("div");
     modal.id = "login-fallback-modal";
     modal.className = "resynk-modal-backdrop active";
     modal.innerHTML = `
-      <div class="resynk-modal-card">
+      <div class="resynk-modal-card" style="max-width: 420px;">
         <div class="modal-header">
           <div class="rzp-brand-badge">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
-            ${noticeHeading}
+            Sign-In Notice
           </div>
           <button type="button" class="btn-close-modal" id="close-login-modal">&times;</button>
         </div>
         <div class="modal-body">
-          <p style="margin-bottom: 16px; font-size: 0.92rem; color: #CBD5E1; line-height: 1.55;">
+          <p style="margin-bottom: 20px; font-size: 0.92rem; color: #CBD5E1; line-height: 1.6;">
             ${noticeText}
           </p>
-          <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid var(--border-brass); border-radius: 12px; padding: 16px; margin-bottom: 20px;">
-            <strong style="color: var(--brass-light); display: block; margin-bottom: 6px;">Instant Student Access Mode</strong>
-            <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.5;">
-              You can instantly enter the Student Portal as a verified student to test lecture streaming, Razorpay checkout, and the dynamic DRM moving watermark.
-            </p>
-          </div>
-
-          <div style="margin-bottom: 16px;">
-            <label style="display:block;font-size:0.8rem;color:#94A3B8;margin-bottom:6px;">Your Name / Email:</label>
-            <input type="text" id="custom-student-name" class="form-control" value="Divya Sharma" style="margin-bottom:8px;">
-            <input type="email" id="custom-student-email" class="form-control" value="divya.student@resynk.academy">
-          </div>
-
-          <button type="button" class="btn-primary" id="btn-login-student-direct" style="width: 100%; justify-content: center;">
-            <span>Sign In as Verified Student</span>
+          <button type="button" class="btn-primary" id="btn-retry-google" style="width: 100%; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+            </svg>
+            <span>Retry with Google</span>
           </button>
         </div>
       </div>
@@ -231,13 +247,13 @@ class ResynkApp {
     document.body.appendChild(modal);
 
     modal.querySelector("#close-login-modal").addEventListener("click", () => modal.remove());
-    modal.querySelector("#btn-login-student-direct").addEventListener("click", () => {
-      const name = modal.querySelector("#custom-student-name").value || "Divya Sharma";
-      const email = modal.querySelector("#custom-student-email").value || "divya.student@resynk.academy";
-      firebaseService.loginAsStudent(name, email);
+    modal.querySelector("#btn-retry-google").addEventListener("click", () => {
       modal.remove();
+      this.handleGoogleLogin();
     });
+    modal.addEventListener("click", (e) => { if (e.target === modal) modal.remove(); });
   }
+
 
   async refreshUserSubscriptions() {
     if (!firebaseService.currentUser) {

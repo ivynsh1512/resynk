@@ -141,22 +141,6 @@ class FirebaseService {
     }
   }
 
-  /**
-   * Instant Student Sign-In
-   * Allows student to enter email/name or login in 1 click
-   */
-  loginAsStudent(name = "Divya — Student", email = "divya.student@resynk.academy") {
-    this.currentUser = {
-      uid: "usr_" + Math.random().toString(36).substring(2, 10),
-      displayName: name,
-      email: email,
-      photoURL: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
-      isStudentSession: true
-    };
-    localStorage.setItem("resynk_student_session", JSON.stringify(this.currentUser));
-    this.notifyAuthSubscribers(this.currentUser);
-    return this.currentUser;
-  }
 
   async logout() {
     try {

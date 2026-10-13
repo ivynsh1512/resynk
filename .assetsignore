@@ -1,3 +1,5 @@
+.git
+.git/*
 .wrangler
 node_modules
 server.js
@@ -10,3 +12,4 @@ data
 worker.js
 wrangler.toml
 .assetsignore
+.gitignore
