@@ -64,19 +64,18 @@ class RazorpayService {
       key: this.keyId,
       amount: amountInPaise,
       currency: "INR",
-      name: "resynk Academy",
+      name: "ReSynk Academy",
       description: `${course.title} (3-Month Access)`,
       image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=120&q=80",
       notes: {
         discipline: course.discipline,
-        validity: "90 Days (3 Months)",
+        validity: "3 Months (90 - 120 Days)",
         userId: currentUser.uid,
         userEmail: currentUser.email
       },
       prefill: {
-        name: currentUser.displayName || "resynk Student",
-        email: currentUser.email || "student@resynk.academy",
-        contact: "9108396010"
+        name: currentUser.displayName || "ReSynk Student",
+        email: currentUser.email || "student@resynk.in"
       },
       theme: {
         color: "#D4AF37",
@@ -148,7 +147,7 @@ class RazorpayService {
             
             <div class="checkout-pricing-row">
               <span class="pricing-label">Access Duration:</span>
-              <span class="pricing-val highlight">90 Days (3 Months Full Validity)</span>
+              <span class="pricing-val highlight">3 Months Access (90 - 120 Days)</span>
             </div>
             <div class="checkout-pricing-row">
               <span class="pricing-label">Billed Amount:</span>
@@ -166,7 +165,7 @@ class RazorpayService {
             </svg>
             <div>
               <strong>Instant Activation Guarantee</strong>
-              <p>Lectures will be immediately unlocked with Dynamic DRM & Anti-recording watermark protection.</p>
+              <p>Lectures, practice guides, and certificate access are immediately unlocked in your Student Portal upon checkout.</p>
             </div>
           </div>
         </div>

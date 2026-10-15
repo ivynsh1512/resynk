@@ -1,9 +1,9 @@
 User-agent: *
 Allow: /
 Allow: /courses
-Allow: /portfolio
-Allow: /contact
+Allow: /about
+Allow: /portal
 Disallow: /api/
 
 # Sitemaps
-Sitemap: http://localhost:3000/sitemap.xml
+Sitemap: https://resynk.in/sitemap.xml

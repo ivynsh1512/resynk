@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Student Classroom Portal — Protected Masterclass Streaming | resynk</title>
-  <meta name="description" content="Dedicated student learning portal for resynk Academy. Watch protected Guitar, Keyboard, and Fine Arts masterclasses with dynamic DRM watermarking and 90-day access validity.">
+  <title>Student Classroom Portal | ReSynk</title>
+  <meta name="description" content="Dedicated student learning portal for ReSynk. Access your Guitar, Keyboard &amp; Piano, and Fine Arts masterclasses with 3 months (90 - 120 days) access validity.">
   <link rel="canonical" href="http://localhost:3000/portal">
 
   <!-- Proper Favicon -->
@@ -13,8 +13,8 @@
   <link rel="apple-touch-icon" href="assets/favicon.svg">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/style.css?v=2.3">
-  <link rel="stylesheet" href="css/player.css?v=2.3">
+  <link rel="stylesheet" href="css/style.css?v=2.5">
+  <link rel="stylesheet" href="css/player.css?v=2.5">
 </head>
 <body>
 
@@ -23,11 +23,11 @@
        ========================================================== -->
   <header class="resynk-navbar">
     <div class="container nav-container">
-      <a href="/" class="brand-logo" aria-label="resynk Academy Home">
-        <img src="assets/logo-mark.svg" alt="resynk Conservatory" class="logo-brand-img">
+      <a href="/" class="brand-logo" aria-label="ReSynk Home">
+        <img src="assets/logo-mark.svg" alt="ReSynk Conservatory" class="logo-brand-img">
         <div class="logo-text-group">
-          <span class="logo-title">re<span>synk</span></span>
-          <span class="logo-sub">D Paul's Academy • Student Portal</span>
+          <span class="logo-title">Re<span>Synk</span></span>
+          <span class="logo-sub">Student Portal</span>
         </div>
       </a>
 
@@ -35,8 +35,7 @@
         <ul class="nav-menu" id="nav-menu">
           <li><a href="/" class="nav-link">Home</a></li>
           <li><a href="/courses" class="nav-link">Courses</a></li>
-          <li><a href="/about" class="nav-link">About Us</a></li>
-          <li><a href="/contact" class="nav-link">Contact</a></li>
+          <li><a href="/about" class="nav-link">About Us &amp; Contact</a></li>
           <li><a href="/portal" class="nav-link active highlight-portal">Student Portal</a></li>
         </ul>
       </nav>
@@ -69,7 +68,7 @@
         </div>
         <h2>Student Conservatory Access</h2>
         <p>
-          Sign in or create your student account using Email &amp; Password or Google to access your lectures and 90-day access validity.
+          Sign in or create your student account using Email &amp; Password or Google to access your lectures and 3 months access validity.
         </p>
 
         <!-- Auth Tabs: Sign In / Create Account -->
@@ -84,7 +83,7 @@
         <form id="form-portal-signin">
           <div class="auth-input-group">
             <label for="portal-signin-email">Student Email Address</label>
-            <input type="email" id="portal-signin-email" class="form-control" placeholder="e.g. student@resynk.in" required>
+            <input type="email" id="portal-signin-email" class="form-control" placeholder="e.g. student@gmail.com" required>
           </div>
           <div class="auth-input-group">
             <label for="portal-signin-password">Password</label>
@@ -125,7 +124,7 @@
         <form id="form-portal-reset" style="display: none;">
           <div class="auth-input-group">
             <label for="portal-reset-email">Registered Email Address</label>
-            <input type="email" id="portal-reset-email" class="form-control" placeholder="e.g. student@resynk.in" required>
+            <input type="email" id="portal-reset-email" class="form-control" placeholder="e.g. student@gmail.com" required>
           </div>
           <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;" id="btn-portal-submit-reset">
             <span>Send Password Reset Email</span>
@@ -150,7 +149,7 @@
         </button>
 
         <span style="font-size: 0.76rem; color: var(--text-muted); display: block; margin-top: 20px;">
-          Support Contact: <a href="mailto:info@resynk.in" style="color: var(--brass-light);">info@resynk.in</a> • Protected by Studio-Grade DRM.
+          Support Contact: <a href="mailto:info@resynk.in" style="color: var(--brass-light);">info@resynk.in</a>
         </span>
       </div>
     </div>
@@ -169,7 +168,7 @@
           <div class="portal-student-title">
             <span class="section-tag">Student Classroom Portal</span>
             <h1 id="portal-welcome-heading">Welcome, Student</h1>
-            <p>Access your enrolled lectures with full DRM forensic protection anytime during your 90-day window.</p>
+            <p>Access your enrolled lectures anytime during your 3-month (90 &ndash; 120 days) learning window.</p>
           </div>
 
           <div class="classroom-validity-banner">
@@ -191,7 +190,7 @@
       <section class="resynk-classroom-section" style="border: none; background: transparent; padding: 20px 0 80px 0;">
         <div class="container">
           <div class="classroom-grid">
-            <!-- Left Column: Protected Video Player & Notes -->
+            <!-- Left Column: Video Player & Notes -->
             <div class="classroom-player-column">
               <div class="resynk-player-container" id="classroom-player-wrapper">
                 <div class="resynk-player-frame" id="classroom-player-frame">
@@ -208,7 +207,7 @@
                     Your browser does not support HTML5 video.
                   </video>
 
-                  <!-- Transparent Click / Tap Interaction Barrier (Shields Video from Downloaders) -->
+                  <!-- Transparent Click / Tap Interaction Barrier -->
                   <div class="resynk-video-shield-barrier" id="video-shield-barrier"></div>
 
                   <!-- Big Center Play/Pause Ripple Button -->
@@ -222,9 +221,9 @@
                     </svg>
                   </button>
 
-                  <!-- Corner Forensic Micro-Stamps (Anti-Cropping Ghost Fingerprints) -->
-                  <div class="forensic-corner-stamp stamp-top-left" id="forensic-stamp-tl">resynk • PROTECTED</div>
-                  <div class="forensic-corner-stamp stamp-bottom-right" id="forensic-stamp-br">UID: RESYNK-STUDENT</div>
+                  <!-- Corner Identification Stamps -->
+                  <div class="forensic-corner-stamp stamp-top-left" id="forensic-stamp-tl">ReSynk</div>
+                  <div class="forensic-corner-stamp stamp-bottom-right" id="forensic-stamp-br">ReSynk Student</div>
 
                   <!-- Dynamic Locked Overlay for Non-Subscribers -->
                   <div class="resynk-locked-screen" id="classroom-locked-overlay" style="display: none;">
@@ -318,7 +317,7 @@
                         <!-- Resolution Badge -->
                         <span class="ctrl-quality-badge" title="Studio Master 1080p">1080p HD</span>
 
-                        <!-- Fullscreen Toggle (Container-Level DRM Protected) -->
+                        <!-- Fullscreen Toggle -->
                         <button type="button" class="ctrl-btn" id="ctrl-fullscreen-btn" aria-label="Fullscreen (F)" title="Fullscreen (F)">
                           <svg class="fs-icon-enter" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="15 3 21 3 21 9"></polyline>
@@ -338,18 +337,18 @@
                   </div>
                 </div>
 
-                <!-- Player Security Bar -->
+                <!-- Player Session Status Bar -->
                 <div class="resynk-player-security-bar">
                   <div class="security-indicator">
                     <span class="pulse-dot"></span>
-                    <span>Dynamic Forensic Watermark: ACTIVE</span>
+                    <span>Classroom Session: Active</span>
                   </div>
                   <div class="validity-countdown-badge">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                       <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                     </svg>
-                    <span>90-Day Protected Token</span>
+                    <span>3 Months Student Access</span>
                   </div>
                 </div>
               </div>
@@ -358,11 +357,11 @@
               <div class="lesson-info-card">
                 <div class="lesson-info-meta">
                   <span class="lesson-tag" id="lesson-tag-display">Guitar • Lesson 1.1</span>
-                  <span>Mentor: Master Rey (Resynk Academy)</span>
+                  <span>Mentor: Master Rey (ReSynk)</span>
                 </div>
                 <h3 class="lesson-title-display" id="lesson-title-display">Lecture 01: Anatomy, Tuning, String Physics &amp; The Golden Posture</h3>
                 <p class="lesson-notes-text" id="lesson-notes-display">
-                  Welcome to resynk. In this opening masterclass, we dissect guitar anatomy, proper fret hand thumb placement, and how to eliminate fret buzz from day one.
+                  Welcome to ReSynk. In this opening masterclass, we dissect guitar anatomy, proper fret hand thumb placement, and how to eliminate fret buzz from day one.
                 </p>
               </div>
             </div>
@@ -372,9 +371,9 @@
               <div class="sidebar-header">
                 <h4>Classroom Syllabus</h4>
                 <select class="course-selector-dropdown" id="course-selector">
-                  <option value="guitar-mastery">Guitar Mastery</option>
-                  <option value="keyboard-mastery">Keyboard &amp; Theory</option>
-                  <option value="fine-arts-mastery">Fine Arts Studio</option>
+                  <option value="guitar-mastery">Guitar Mastery (₹249)</option>
+                  <option value="keyboard-mastery">Keyboard &amp; Piano (*Coming Soon*)</option>
+                  <option value="fine-arts-mastery">Fine Arts Studio (*Coming Soon*)</option>
                 </select>
               </div>
               <div class="sidebar-playlist" id="sidebar-playlist">
@@ -393,47 +392,46 @@
       <div class="footer-top">
         <div class="footer-brand">
           <div class="brand-logo">
-            <img src="assets/logo-mark.svg" alt="resynk Conservatory" class="logo-brand-img">
+            <img src="assets/logo-mark.svg" alt="ReSynk Conservatory" class="logo-brand-img">
             <div class="logo-text-group">
-              <span class="logo-title">re<span>synk</span></span>
-              <span class="logo-sub">D Paul's Academy • Student Portal</span>
+              <span class="logo-title">Re<span>Synk</span></span>
+              <span class="logo-sub">Student Portal</span>
             </div>
           </div>
-          <p>Protected streaming classroom for verified students. Dynamic forensic watermarking safeguards all proprietary lectures.</p>
+          <p>Dedicated student learning portal for ReSynk. Access masterclasses, lesson notes, and your Certificate of Completion.</p>
         </div>
 
         <div class="footer-col">
           <h5>Classroom</h5>
           <ul class="footer-links">
             <li><a href="/portal">Active Lecture</a></li>
-            <li><a href="/courses">Explore Other Disciplines</a></li>
-            <li><a href="/about">About Us &amp; Heritage</a></li>
+            <li><a href="/courses">Explore Disciplines</a></li>
+            <li><a href="/about">About Us &amp; Contact</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h5>Security Policy</h5>
+          <h5>Student Perks</h5>
           <ul class="footer-links">
-            <li><a href="#">Dynamic Forensic Watermarking</a></li>
-            <li><a href="#">Window Focus Auto-Blackout</a></li>
-            <li><a href="#">Non-Distributable Content</a></li>
+            <li><a href="/portal">Step-by-Step Lessons</a></li>
+            <li><a href="/courses#guitar">Certificate of Completion</a></li>
+            <li><a href="/about#contact">Live Doubt Workshop Access</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h5>Academy Support</h5>
           <ul class="footer-links">
-            <li><span style="color: #CBD5E1; font-weight: 600;">Resynk Academy</span></li>
+            <li><span style="color: #CBD5E1; font-weight: 600;">ReSynk</span></li>
             <li><span style="color: #94A3B8;">Kothanur, Bangalore 560077</span></li>
             <li><span style="color: #64748B; font-size: 0.85rem;">Near Hennur Main Road — accessible from Thanisandra, Byrathi &amp; Horamavu</span></li>
             <li><a href="mailto:info@resynk.in" style="color: var(--brass-light); font-weight: 500;">info@resynk.in</a></li>
-            <li><a href="tel:+919108396010" style="color: var(--brass-light); font-weight: 600;">+91 910 839 6010</a></li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <div>&copy; 2014 &ndash; 2026 resynk • D Paul’s Academy. All Rights Reserved.</div>
+        <div>&copy; ReSynk. All Rights Reserved.</div>
         <div>Built and Powered by <a href="https://services.novaxai.in" target="_blank" rel="noopener noreferrer" style="color: var(--brass-light); text-decoration: underline;">NovaX AI</a></div>
       </div>
     </div>

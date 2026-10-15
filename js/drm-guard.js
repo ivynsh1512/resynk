@@ -64,7 +64,7 @@ export class DRMGuard {
     this.videoElement.setAttribute("draggable", "false");
     this.videoElement.oncontextmenu = (e) => {
       e.preventDefault();
-      this.showToast("Right-click menu is protected on resynk.");
+      this.showToast("Right-click is disabled on the video player.");
       return false;
     };
   }
@@ -492,7 +492,7 @@ export class DRMGuard {
     watermark.innerHTML = `
       <div class="watermark-inner">
         <div class="watermark-header">
-          <span class="watermark-brand">resynk ENCRYPTED</span>
+          <span class="watermark-brand">ReSynk</span>
           <span class="watermark-clock">00:00:00</span>
         </div>
         <div class="watermark-body">
@@ -518,12 +518,11 @@ export class DRMGuard {
       <div class="shield-card">
         <div class="shield-icon">
           <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
           </svg>
         </div>
-        <h3>Playback Suspended for Security</h3>
-        <p>Window focus was lost, or screen recording / capture activity was detected. Return to this tab to resume your lecture.</p>
+        <h3>Playback Paused</h3>
+        <p>Return to this window to resume streaming your lesson.</p>
         <button type="button" class="btn-resume-playback">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <polygon points="5 3 19 12 5 21 5 3"></polygon>
@@ -661,7 +660,7 @@ export class DRMGuard {
       const target = e.target;
       if (target.closest(".resynk-player-frame") || target.closest("video") || target.closest(".resynk-classroom")) {
         e.preventDefault();
-        this.showToast("Right-click context menu is protected on resynk.");
+        this.showToast("Right-click is disabled on the video player.");
         return false;
       }
     });
@@ -676,7 +675,7 @@ export class DRMGuard {
       if (key === "PrintScreen") {
         e.preventDefault();
         this.triggerSecurityShield("PrintScreen capture shortcut intercepted");
-        this.showToast("Screen captures are disabled on resynk.");
+        this.showToast("Screen capture is disabled.");
         try {
           if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText("");
@@ -688,35 +687,35 @@ export class DRMGuard {
       // F12 (DevTools)
       if (key === "F12") {
         e.preventDefault();
-        this.showToast("Developer inspection tools are disabled.");
+        this.showToast("Inspection tools are disabled.");
         return false;
       }
 
       // Ctrl + Shift + I / J / C (Inspect / Console)
       if (ctrl && shift && ["I", "i", "J", "j", "C", "c"].includes(key)) {
         e.preventDefault();
-        this.showToast("Developer inspection tools are disabled.");
+        this.showToast("Inspection tools are disabled.");
         return false;
       }
 
       // Ctrl + U (View Source)
       if (ctrl && (key === "u" || key === "U")) {
         e.preventDefault();
-        this.showToast("Source view is protected.");
+        this.showToast("Action unavailable.");
         return false;
       }
 
       // Ctrl + S (Save Page / Save Video)
       if (ctrl && (key === "s" || key === "S")) {
         e.preventDefault();
-        this.showToast("Direct downloads are disabled. Access is streaming only.");
+        this.showToast("Streaming access only.");
         return false;
       }
 
       // Ctrl + P (Print Page)
       if (ctrl && (key === "p" || key === "P")) {
         e.preventDefault();
-        this.showToast("Printing protected materials is restricted.");
+        this.showToast("Action unavailable.");
         return false;
       }
     }, true);
@@ -725,8 +724,8 @@ export class DRMGuard {
     if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
       navigator.mediaDevices.getDisplayMedia = (...args) => {
         this.triggerSecurityShield("Screen capture API attempt detected");
-        this.showToast("Screen recording is forbidden by resynk DRM policy.");
-        return Promise.reject(new Error("resynk: Screen capture blocked by DRM policy."));
+        this.showToast("Screen recording is not supported.");
+        return Promise.reject(new Error("ReSynk: Video playback error."));
       };
     }
 

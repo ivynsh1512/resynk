@@ -1,39 +1,40 @@
 /**
- * resynk — Official Academy Curriculum Data
- * Disciplines: Guitar, Keyboard & Music Theorem, Fine Arts
- * Validity: 3 Months (90 Days) from date of enrollment
+ * ReSynk — Official Academy Curriculum Data
+ * Disciplines: Guitar, Keyboard & Piano, Fine Arts
+ * Validity: 3 Months (90 - 120 Days) from date of enrollment
  */
 
 export const COURSES = [
   {
     id: "guitar-mastery",
-    title: "Guitar Mastery: Acoustic & Contemporary Electric",
+    title: "Guitar Mastery: Learn from the Experts",
     category: "guitar",
-    tagline: "From fingerstyle mechanics & harmonic theory to confident performance.",
-    price: 1499,
-    originalPrice: 2999,
-    validityDays: 90,
+    tagline: "Learn from basic to advanced step by step with certified musicians.",
+    price: 249,
+    originalPrice: 1499,
+    validityDays: 120,
     discipline: "Guitar",
-    level: "Beginner to Advanced Repertoire",
-    badge: "Most Popular",
+    level: "Basic to Advanced Step by Step",
+    badge: "Special Offer • ₹249",
     rating: 4.9,
     reviewsCount: 142,
     totalLectures: 24,
     totalHours: "16 Hours",
-    description: "A comprehensive journey through acoustic and electric guitar craft. Master posture, open & barre chords, syncopated strumming rhythms, fingerstyle polyphony, pentatonic lead scales, and popular performance arrangements.",
+    description: "Learn from the experts and certified musicians from basic to advanced step by step. We teach guitar fundamentals, tabs, scales, and chords. Learn to play over 100+ chords and 25 songs for just ₹249! Includes a Certificate of Completion at the end of the course and free access to a live workshop session once course is completed to clarify all your doubts.",
     highlights: [
-      "90-Day Full Access with Dynamic DRM Protection",
-      "24 High-Definition Structured Video Lectures",
-      "Fingerstyle Tabs, Chord Sheets & Practice Loops",
-      "Comprehensive Music Theorem & Ear Training Integrations",
-      "Direct Mentor Feedback on Recorded Submissions"
+      "Learn from Basic to Advanced Step by Step with Certified Musicians",
+      "Master Guitar Basics, Tabs, Scales & Play 100+ Chords",
+      "Learn to Play 25 Songs with Guided Step-by-Step Lessons",
+      "Certificate of Completion at the End of the Course",
+      "Free Access to Live Workshop Session Once Course Completed to Clarify Doubts",
+      "3 Months Access (90 - 120 Days) for Just ₹249"
     ],
     previewVideo: {
       title: "Lecture 01: Anatomy, Tuning, String Physics & The Golden Posture",
       duration: "14:20",
       videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
       poster: "assets/guitar_class.jpg",
-      notes: "Welcome to resynk Guitar Mastery. In this opening masterclass, we dissect guitar anatomy, proper fret hand thumb placement, and how to eliminate fret buzz from day one."
+      notes: "Welcome to ReSynk Guitar Mastery. In this opening masterclass, we dissect guitar anatomy, proper fret hand thumb placement, and how to produce clear, buzz-free tone from day one."
     },
     modules: [
       {
@@ -139,33 +140,35 @@ export const COURSES = [
   },
   {
     id: "keyboard-mastery",
-    title: "Keyboard & Music Theorem Masterclass",
+    title: "Keyboard & Piano Mastery",
     category: "keyboard",
-    tagline: "Harmonic architecture, sight-reading, chord inversions & two-hand sync.",
-    price: 1499,
-    originalPrice: 2999,
-    validityDays: 90,
-    discipline: "Keyboard & Theory",
-    level: "Beginner to Intermediate Harmonic Mastery",
-    badge: "Theory Certified",
+    tagline: "Learn from basic to advanced step by step with certified musicians.",
+    price: 249,
+    originalPrice: 1499,
+    validityDays: 120,
+    discipline: "Keyboard & Piano",
+    level: "Basic to Advanced Step by Step",
+    badge: "Coming Soon",
+    comingSoon: true,
     rating: 4.95,
     reviewsCount: 118,
     totalLectures: 28,
     totalHours: "18 Hours",
-    description: "Built upon the rigorous curriculum of D Paul’s Academy Certified Comprehensive Music Theorem. Learn keyboard layout, scale construction, chord voicings, inversions, left-hand bass accompaniment, and harmonic improvisation.",
+    description: "Learn piano and keyboard from the experts! Step-by-step guidance from basic to advanced: keyboard geography, scales, chord voicings, two-hand coordination, and playing your favorite melodies with ease. Includes Certificate of Completion at the end of the course and free access to live workshop session to clarify doubts. *Coming Soon*.",
     highlights: [
-      "90-Day Full Access with Anti-Recording Watermark",
-      "Certified Music Theorem & Western Classical Harmony",
-      "Two-Hand Independence Exercises & Lead Sheet Reading",
-      "Chord Inversion Formulas & Modern Pop Accompaniments",
-      "Course Certificate from D Paul’s Academy upon Completion"
+      "Learn from Basic to Advanced Step by Step with Certified Musicians",
+      "Keyboard Geography, Scales, Inversions & Two-Hand Coordination",
+      "Learn to Play Songs & Contemporary Accompaniments with Ease",
+      "Certificate of Completion at the End of the Course",
+      "Free Access to Live Workshop Session to Clarify Doubts",
+      "*Coming Soon* — Enrollments Opening Soon"
     ],
     previewVideo: {
       title: "Lecture 01: Piano Geography, Octaves & Hand Independence",
       duration: "16:40",
       videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
       poster: "assets/keyboard_class.jpg",
-      notes: "Demystifying the 88 keys through the twin-black and triple-black pattern. Natural curvature of the fingers and preventing wrist fatigue."
+      notes: "Demystifying the 88 keys through the twin-black and triple-black pattern. Natural curvature of the fingers and relaxed wrist posture."
     },
     modules: [
       {
@@ -264,31 +267,33 @@ export const COURSES = [
     id: "fine-arts-mastery",
     title: "Fine Arts & Creative Expression Studio",
     category: "arts",
-    tagline: "Classical sketching, tonal shading, color theory, portraiture & acrylics.",
-    price: 1299,
-    originalPrice: 2499,
-    validityDays: 90,
+    tagline: "Inspiring step-by-step guidance in sketching, realistic painting & concept art for all ages.",
+    price: 249,
+    originalPrice: 1499,
+    validityDays: 120,
     discipline: "Fine Arts",
-    level: "All Levels (Child to Adult)",
-    badge: "Creative Studio",
+    level: "All Ages (Kids to Adults)",
+    badge: "Coming Soon",
+    comingSoon: true,
     rating: 4.92,
     reviewsCount: 89,
     totalLectures: 20,
     totalHours: "14 Hours",
-    description: "Explore your creative voice through structured visual disciplines. Master graphite pencil grades, charcoal blending, light source dynamics, two-point perspective, watercolor washes, and acrylic canvas composition.",
+    description: "Explore your creative potential through inspiring step-by-step guidance! From foundational pencil sketching and shading to realistic portraiture, concept art, and vibrant canvas painting. Open and encouraging for all ages — from kids to adults. Includes Certificate of Completion at the end of the course and free access to live workshop session to clarify doubts. *Coming Soon*.",
     highlights: [
-      "90-Day Full Access with Protected Visual Lectures",
-      "Pencil Grading (2H–8B) & Charcoal Blending Techniques",
-      "Perspective, Proportions & Human Portrait Geometry",
-      "Color Temperature & Acrylic Canvas Composition",
-      "Personalized Artwork Critique Submission Guidelines"
+      "Step-by-Step Guidance from Basic Sketching to Realistic Painting",
+      "Realistic Portraiture, Concept Art & Canvas Painting",
+      "Encouraging Training Designed for All Ages — Kids to Adults",
+      "Certificate of Completion at the End of the Course",
+      "Free Access to Live Workshop Session to Clarify Doubts",
+      "*Coming Soon* — Enrollments Opening Soon"
     ],
     previewVideo: {
       title: "Lecture 01: The Grammar of Line, Grip & Pencil Grades (2H to 8B)",
       duration: "15:10",
       videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
       poster: "assets/fine_arts_class.jpg",
-      notes: "Understanding graphite hardness, cross-hatching, stippling, and continuous tonal gradients."
+      notes: "Understanding graphite hardness, cross-hatching, stippling, and smooth continuous tonal gradients."
     },
     modules: [
       {
@@ -373,59 +378,31 @@ export const COURSES = [
         ]
       }
     ]
-  },
-  {
-    id: "all-access-pass",
-    title: "resynk Triad Master Pass (Guitar + Keyboard + Fine Arts)",
-    category: "bundle",
-    tagline: "The complete multidisciplinary academy pass for ambitious artists.",
-    price: 2999,
-    originalPrice: 5997,
-    validityDays: 90,
-    discipline: "All 3 Disciplines Included",
-    level: "Complete Conservatory Access",
-    badge: "Best Value (Save ₹2,998)",
-    rating: 5.0,
-    reviewsCount: 204,
-    totalLectures: 72,
-    totalHours: "48 Hours",
-    description: "Full, unrestricted 90-day access to all three masterclasses at resynk: Guitar Mastery, Keyboard & Music Theorem, and Fine Arts Studio. Includes unified curriculum navigation, priority mentor reviews, and individual completion certificates.",
-    highlights: [
-      "90-Day Full Access Across ALL 3 Disciplines",
-      "72 In-Depth Video Lectures with Zero Ads",
-      "Includes D Paul’s Academy Certified Music Theorem Course",
-      "Protected Player with Dynamic Anti-Recording Forensic Watermark",
-      "Full Suite of Practice Sheets, Reference Photos & Audio Tracks",
-      "Huge Savings: All 3 for ₹2,999 (Regular ₹5,997)"
-    ],
-    previewVideo: {
-      title: "Academy Overview & Multi-Instrument Synergy",
-      duration: "10:15",
-      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-      poster: "assets/keyboard_class.jpg",
-      notes: "How studying visual arts and music theory simultaneously elevates your ear, spatial awareness, and creative discipline."
-    },
-    modules: [] // Unlocks all modules from the 3 courses
   }
 ];
 
 export const FOUNDER_PORTFOLIO = {
   name: "Master Rey",
-  academy: "Resynk Academy",
+  academy: "ReSynk",
   foundedYear: "2014",
-  role: "Founder — Music Artist, Composer",
-  motto: "Dance • Learn • Grow",
-  overview: "Dedicated to holistic arts and music education since 2014. Blending classical music theory, emotional psychology, and fine arts into an empowering conservatory methodology. Training thousands of students across Bangalore's premier schools, colleges, and gated communities.",
+  role: "Founder — Professional Guitarist, Music Composer & Vocalist",
+  motto: "Learn • Create • Master",
+  overview: "Professional guitarist, music composer, and vocalist with over 10 years of experience. Founder of D Paul's Academy and Director & Founder of ReSynk.in. Master Rey has trained over 5,000 students, including aspiring artists from abroad. Certified music teacher who has composed official anthems for several leading educational institutions.",
   coFounder: {
     name: "Sneha Sharma",
-    role: "Co-Founder & Director of Academy Operations",
-    overview: "Directing academy operations, student welfare, curriculum coordination, and institutional partnerships across Bangalore."
+    role: "Co-Founder & Concept Artist",
+    overview: "Excellent artist and concept artist specializing in realistic painting and exquisite portraits. Passionate educator offering encouraging training for all ages, from kids to adults."
   },
-  educationAndCertifications: [
-    { title: "BA Sociology", detail: "Foundational understanding of community cultural dynamics and collective artistic rituals." },
-    { title: "PGDP in Psychology", detail: "Post Graduate Diploma in Psychology applying empathetic pedagogical methods for accelerated learning." },
-    { title: "International Certified Happiness Coach", detail: "Integrating music, movement, and fine arts as joyful mediums for emotional wellness." },
-    { title: "Certified Comprehensive Music Theorem", detail: "Rigorous certification in harmonic structure, scale harmonization, counterpoint, and classical composition." }
+  founderHighlights: [
+    { title: "Professional Guitarist, Music Composer & Vocalist", detail: "Over a decade of guitar performance, composition, and vocal mentoring." },
+    { title: "Director & Founder for ReSynk.in", detail: "Visionary leadership providing accessible, master-level arts education." },
+    { title: "Trained Over 5,000 Students Worldwide", detail: "Mentored over 5,000 students across India and abroad." },
+    { title: "Certified Music Teacher & Institutional Anthem Composer", detail: "Composed official anthems for prestigious educational institutions." }
+  ],
+  coFounderHighlights: [
+    { title: "Concept Artist & Realistic Painter", detail: "Mastering high-fidelity portraiture, realistic shading, and vibrant canvas painting." },
+    { title: "Training for All Ages (Kids to Adults)", detail: "Warm, encouraging pedagogy structured for young children through adult learners." },
+    { title: "Academy Operations & Strategy", detail: "Directing student admissions, curriculum standards, and school partnerships." }
   ],
   awards: [
     { title: "Seva Bhushan Puraskar Award", level: "State Level Honor", description: "Recognizing sustained excellence, social impact, and artistic dedication across Karnataka." },
@@ -483,12 +460,8 @@ export const FOUNDER_PORTFOLIO = {
     "St Francis Xavier Degree College"
   ],
   contact: {
-    youtube: "@Dpauls_academy",
-    youtubeUrl: "https://www.youtube.com/@Dpauls_academy",
-    phone: "910 839 6010",
-    phoneCallable: "+919108396010",
     email: "info@resynk.in",
-    address: "Resynk, Kothanur, Bangalore 560077",
+    address: "ReSynk, Kothanur, Bangalore 560077",
     addressLandmark: "Near Hennur Main Road — accessible from Thanisandra, Byrathi & Horamavu"
   }
 };

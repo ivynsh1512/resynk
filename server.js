@@ -118,7 +118,7 @@ const server = http.createServer(async (req, res) => {
     // 2. Razorpay Order Creation
     if (pathname === '/api/razorpay/create-order' && req.method === 'POST') {
       const payload = await parseRequestBody(req);
-      const amount = payload.amount || 1499;
+      const amount = payload.amount || 249;
       const courseId = payload.courseId || 'guitar-mastery';
       
       const orderId = 'order_' + Math.random().toString(36).substring(2, 12);
@@ -144,13 +144,13 @@ const server = http.createServer(async (req, res) => {
       }
 
       const now = new Date();
-      const validityDays = 90; // Exactly 3 months
+      const validityDays = 120; // 3 to 4 months validity (90 - 120 days)
       const expiresAt = new Date(now.getTime() + (validityDays * 24 * 60 * 60 * 1000));
 
       const subData = {
         courseId,
         userId,
-        userEmail: userEmail || 'student@resynk.academy',
+        userEmail: userEmail || 'student@resynk.in',
         paymentId: paymentId || ('pay_' + Math.random().toString(36).substring(2, 10)),
         orderId: orderId || ('ord_' + Math.random().toString(36).substring(2, 10)),
         amountPaid: amount || 0,
@@ -283,11 +283,10 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log(`\n================================================================`);
-  console.log(`⚡ resynk Multi-Page Academy & Worker running at:`);
+  console.log(`⚡ ReSynk Multi-Page Conservatory & Server running at:`);
   console.log(`   ➜ Local:   http://localhost:${PORT}`);
   console.log(`   ➜ Courses: http://localhost:${PORT}/courses`);
   console.log(`   ➜ Portal:  http://localhost:${PORT}/portal`);
-  console.log(`   ➜ Founder: http://localhost:${PORT}/portfolio`);
-  console.log(`   ➜ Contact: http://localhost:${PORT}/contact`);
+  console.log(`   ➜ About:   http://localhost:${PORT}/about`);
   console.log(`================================================================\n`);
 });

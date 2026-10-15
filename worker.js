@@ -56,7 +56,7 @@ export default {
 
           return jsonResponse({
             status: "healthy",
-            academy: "resynk — D Paul's Academy",
+            academy: "ReSynk Academy",
             founder: "Master Rey",
             coFounder: "Sneha Sharma",
             database: "Cloudflare D1 (resynk-db)",
@@ -69,7 +69,7 @@ export default {
         // 2. Razorpay Order Creation
         if (pathname === "/api/razorpay/create-order" && request.method === "POST") {
           const body = await request.json().catch(() => ({}));
-          const amount = Number(body.amount) || 1499;
+          const amount = Number(body.amount) || 249;
           const courseId = body.courseId || "guitar-mastery";
           const orderId = "order_" + crypto.randomUUID().replace(/-/g, "").substring(0, 12);
 
@@ -93,10 +93,10 @@ export default {
           }
 
           const now = new Date();
-          const validityDays = 90; // Exactly 3 months (90 days)
+          const validityDays = 120; // 3 to 4 months validity (90 - 120 days)
           const expiresAt = new Date(now.getTime() + (validityDays * 24 * 60 * 60 * 1000));
 
-          const safeUserEmail = userEmail || "student@resynk.academy";
+          const safeUserEmail = userEmail || "student@resynk.in";
           const safePaymentId = paymentId || ("pay_" + crypto.randomUUID().replace(/-/g, "").substring(0, 10));
           const safeOrderId = orderId || ("ord_" + crypto.randomUUID().replace(/-/g, "").substring(0, 10));
           const safeAmount = Number(amount) || 0;
@@ -203,9 +203,9 @@ export default {
         // 5. Contact Inquiries to D1
         if (pathname === "/api/contact" && request.method === "POST") {
           const body = await request.json().catch(() => ({}));
-          const { name, phone, discipline, message } = body;
+          const { name, phone, email, discipline, message } = body;
 
-          if (env.DB && name && phone) {
+          if (env.DB && name && (phone || email)) {
             const inquiryId = crypto.randomUUID();
             await env.DB.prepare(`
               INSERT INTO inquiries (id, name, phone, discipline, message, created_at)
@@ -213,7 +213,7 @@ export default {
             `).bind(
               inquiryId,
               String(name),
-              String(phone),
+              String(phone || email || ""),
               String(discipline || "General"),
               String(message || ""),
               new Date().toISOString()
@@ -269,7 +269,7 @@ export default {
       return response;
     }
 
-    return new Response("resynk Cloudflare Worker is running. Assets binding not configured.", {
+    return new Response("ReSynk Cloudflare Worker is running. Assets binding not configured.", {
       status: 200,
       headers: { "Content-Type": "text/plain" }
     });

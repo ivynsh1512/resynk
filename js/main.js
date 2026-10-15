@@ -650,24 +650,31 @@ class ResynkApp {
   renderCourses(category = "all") {
     if (!this.coursesGrid) return;
 
-    const filtered = category === "all"
-      ? COURSES
-      : COURSES.filter(c => c.category === category || (c.category === "bundle" && category === "bundle"));
+    // Main page (index.html) only showcases the Guitar course
+    const isMainPage = !document.querySelector(".courses-filter-tabs");
+    let filtered;
+    if (isMainPage) {
+      filtered = COURSES.filter(c => c.category === "guitar");
+    } else {
+      filtered = category === "all"
+        ? COURSES
+        : COURSES.filter(c => c.category === category);
+    }
 
     this.coursesGrid.innerHTML = filtered.map(course => {
-      const isSubscribed = Boolean(this.userSubscriptions[course.id] || this.userSubscriptions["all-access-pass"]);
+      const isSubscribed = Boolean(this.userSubscriptions[course.id]);
 
       return `
-        <article class="course-card ${course.category === 'bundle' ? 'featured' : ''}" data-id="${course.id}">
+        <article class="course-card ${course.comingSoon ? 'coming-soon-card' : ''}" data-id="${course.id}">
           <div class="course-card-poster">
             <img src="${course.previewVideo.poster}" alt="${course.title}">
-            <span class="course-badge-pill">${course.badge}</span>
+            <span class="course-badge-pill" ${course.comingSoon ? 'style="background: rgba(212, 175, 55, 0.2); border-color: rgba(212, 175, 55, 0.5); color: var(--brass-light);"' : ''}>${course.badge}</span>
             <div class="course-validity-badge">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"></circle>
                 <polyline points="12 6 12 12 16 14"></polyline>
               </svg>
-              <span>3 Months Validity</span>
+              <span>3 Months Access</span>
             </div>
           </div>
           <div class="course-card-body">
@@ -697,11 +704,24 @@ class ResynkApp {
 
             <div class="course-pricing-row">
               <div class="pricing-block">
-                <span class="price-current">₹${course.price.toLocaleString("en-IN")}</span>
-                <span class="price-sub">90 Days Full Access Pass</span>
+                ${course.comingSoon ? `
+                  <span class="price-current" style="font-size: 1.25rem; color: var(--brass-light);">Coming Soon</span>
+                  <span class="price-sub">Stay Tuned for Launch</span>
+                ` : `
+                  <span class="price-current">₹${course.price.toLocaleString("en-IN")}</span>
+                  <span class="price-sub">3 Months Full Access</span>
+                `}
               </div>
 
-              ${isSubscribed ? `
+              ${course.comingSoon ? `
+                <button type="button" class="btn-enroll-card" disabled style="opacity: 0.8; cursor: default; background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.18); color: #CBD5E1;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <span>*Coming Soon*</span>
+                </button>
+              ` : isSubscribed ? `
                 <a href="/portal" class="btn-enroll-card enrolled">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                     <polygon points="5 3 19 12 5 21 5 3"></polygon>
@@ -715,7 +735,7 @@ class ResynkApp {
                     <line x1="3" y1="6" x2="21" y2="6"></line>
                     <path d="M16 10a4 4 0 0 1-8 0"></path>
                   </svg>
-                  <span>Enroll via Razorpay</span>
+                  <span>Enroll for ₹${course.price}</span>
                 </button>
               `}
             </div>
@@ -790,13 +810,13 @@ class ResynkApp {
           </div>
           <h3 style="font-size: 1.45rem; margin-bottom: 8px;">Welcome to ${course.title}</h3>
           <p style="color: #94A3B8; font-size: 0.92rem; margin-bottom: 24px;">
-            Your 3-Month access is officially active. All lectures and practice materials are unlocked with dynamic DRM protection.
+            Your 3-Month access is officially active. All lectures and practice materials are now unlocked.
           </p>
 
           <div style="background: var(--bg-elevated); border: 1px solid var(--border-brass); border-radius: 14px; padding: 18px; margin-bottom: 24px; text-align: left;">
             <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 8px;">
               <span style="color: #94A3B8;">Validity Window:</span>
-              <strong style="color: var(--brass-light);">90 Days (3 Months)</strong>
+              <strong style="color: var(--brass-light);">3 Months (90 - 120 Days)</strong>
             </div>
             <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 8px;">
               <span style="color: #94A3B8;">Access Valid Until:</span>
@@ -948,7 +968,7 @@ class ResynkApp {
           Enrollment Required
         </span>
         <h3>Unlock ${course.discipline} Masterclass</h3>
-        <p>Enroll via Razorpay to unlock 90 days of unrestricted streaming, comprehensive music theory sheets, and dynamic anti-recording watermark protection.</p>
+        <p>Enroll to unlock 3 months (90 - 120 days) of unrestricted streaming, comprehensive lesson sheets, and direct mentor support.</p>
         
         <div class="locked-meta-row">
           <div class="locked-meta-item">
@@ -956,20 +976,21 @@ class ResynkApp {
               <circle cx="12" cy="12" r="10"></circle>
               <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
-            <span>3 Months Validity</span>
+            <span>3 Months Access</span>
           </div>
           <div class="locked-meta-item">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
-            <span>DRM Encrypted</span>
+            <span>Certificate Included</span>
           </div>
         </div>
 
         <div class="locked-price-pill">₹${course.price.toLocaleString("en-IN")}</div>
 
         <button type="button" class="btn-unlock-lecture" id="btn-locked-overlay-enroll">
-          <span>Enroll via Razorpay</span>
+          <span>Enroll for ₹${course.price}</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
             <polygon points="5 3 19 12 5 21 5 3"></polygon>
           </svg>
@@ -994,7 +1015,7 @@ class ResynkApp {
     } else {
       this.validityTimerDisplay.innerHTML = `
         <span class="validity-timer-label">Access Status</span>
-        <span class="validity-timer-val" style="color: var(--text-muted);">Enrollment Required (90 Days Access)</span>
+        <span class="validity-timer-val" style="color: var(--text-muted);">Enrollment Required (3 Months Access)</span>
       `;
     }
   }
@@ -1040,7 +1061,8 @@ class ResynkApp {
 
       const payload = {
         name: document.getElementById("student-name")?.value,
-        phone: document.getElementById("student-phone")?.value,
+        email: document.getElementById("student-email")?.value,
+        phone: document.getElementById("student-phone")?.value || "",
         discipline: document.getElementById("discipline-choice")?.value,
         message: document.getElementById("student-message")?.value
       };
