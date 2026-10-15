@@ -11,7 +11,7 @@ export const COURSES = [
     category: "guitar",
     tagline: "Learn from basic to advanced step by step with certified musicians.",
     price: 249,
-    originalPrice: 1499,
+    originalPrice: 2500,
     validityDays: 120,
     discipline: "Guitar",
     level: "Basic to Advanced Step by Step",

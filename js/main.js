@@ -650,7 +650,7 @@ class ResynkApp {
   renderCourses(category = "all") {
     if (!this.coursesGrid) return;
 
-    // Main page (index.html) only showcases the Guitar course
+    // Main page (index.html) showcases the Guitar masterclass as an eye-catching premier offer
     const isMainPage = !document.querySelector(".courses-filter-tabs");
     let filtered;
     if (isMainPage) {
@@ -661,14 +661,209 @@ class ResynkApp {
         : COURSES.filter(c => c.category === category);
     }
 
+    if (isMainPage) {
+      this.coursesGrid.classList.add("courses-grid-showcase");
+      const course = filtered[0];
+      if (!course) return;
+
+      const isSubscribed = Boolean(this.userSubscriptions[course.id]);
+      const discountPercent = course.originalPrice ? Math.round(((course.originalPrice - course.price) / course.originalPrice) * 100) : 90;
+
+      this.coursesGrid.innerHTML = `
+        <article class="course-showcase-card" data-id="${course.id}">
+          <div class="showcase-glow-bg"></div>
+          
+          <!-- Top Urgency Ribbon -->
+          <div class="showcase-top-ribbon">
+            <div class="ribbon-deal-badge">
+              <span class="ribbon-fire">🔥</span>
+              <span>SPECIAL LIMITED TIME DEAL &bull; ${discountPercent}% OFF</span>
+            </div>
+            <div class="ribbon-seats-info">
+              <span class="pulse-dot"></span>
+              <span>Batch Enrollment Open Now &bull; 3 Months Full Access</span>
+            </div>
+          </div>
+
+          <div class="showcase-body-grid">
+            <!-- Left Column: Visual Poster & Credibility Signals -->
+            <div class="showcase-visual-col">
+              <div class="showcase-poster-frame">
+                <img src="${course.previewVideo.poster}" alt="${course.title}">
+                <div class="poster-overlay-gradient"></div>
+                <div class="poster-corner-badge">
+                  <span>${discountPercent}% OFF</span>
+                </div>
+                <div class="poster-validity-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <span>3 Months Access (90 - 120 Days)</span>
+                </div>
+              </div>
+
+              <!-- Credibility Badges -->
+              <div class="showcase-trust-pills">
+                <div class="trust-pill-item">
+                  <span class="trust-pill-icon">🎸</span>
+                  <div>
+                    <strong>Certified Musician</strong>
+                    <span>Professional Mentor</span>
+                  </div>
+                </div>
+                <div class="trust-pill-item">
+                  <span class="trust-pill-icon">👥</span>
+                  <div>
+                    <strong>Over 5,000</strong>
+                    <span>Students Trained</span>
+                  </div>
+                </div>
+                <div class="trust-pill-item">
+                  <span class="trust-pill-icon">⭐</span>
+                  <div>
+                    <strong>${course.rating} / 5.0 Rating</strong>
+                    <span>${course.reviewsCount} Student Reviews</span>
+                  </div>
+                </div>
+                <div class="trust-pill-item">
+                  <span class="trust-pill-icon">🎓</span>
+                  <div>
+                    <strong>Certificate</strong>
+                    <span>Upon Completion</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Irresistible Value Proposition & Pricing -->
+            <div class="showcase-details-col">
+              <div class="showcase-header">
+                <span class="showcase-tag">SIGNATURE MASTERCLASS</span>
+                <h3 class="showcase-title">${course.title}</h3>
+                <p class="showcase-tagline">
+                  Learn from basic to advanced step by step with certified musicians. Master fundamentals, tabs, scales, over 100+ chords, and several Bollywood &amp; Hollywood songs!
+                </p>
+              </div>
+
+              <!-- High-Conversion Pricing Box -->
+              <div class="showcase-pricing-card">
+                <div class="pricing-headline-row">
+                  <div class="pricing-numbers">
+                    <div class="price-strike-group">
+                      <span class="price-strike-label">Course Worth:</span>
+                      <span class="price-original-strike">₹${(course.originalPrice || 2500).toLocaleString("en-IN")}</span>
+                    </div>
+                    <div class="price-hero-group">
+                      <span class="price-now-label">Special Offer:</span>
+                      <span class="price-hero-amount">₹${course.price}</span>
+                    </div>
+                  </div>
+                  <div class="discount-badge-flame">
+                    <span>SAVE ${discountPercent}%</span>
+                  </div>
+                </div>
+                <div class="pricing-guarantee-note">
+                  <span>⚡ One-time investment &bull; No hidden recurring fees &bull; Instant portal activation</span>
+                </div>
+              </div>
+
+              <!-- What You Will Master (Feature Checklist) -->
+              <div class="showcase-features-container">
+                <h4 class="features-header-title">Everything Included in Your Enrollment:</h4>
+                <ul class="showcase-checklist">
+                  <li>
+                    <span class="check-icon">✓</span>
+                    <span><strong>Basic to Advanced Step by Step:</strong> Structured foundational mechanics, zero-tension posture &amp; finger exercises.</span>
+                  </li>
+                  <li>
+                    <span class="check-icon">✓</span>
+                    <span><strong>100+ Chords, Tabs &amp; Scales:</strong> Open chords, barre transitions, scale geometry, and rhythmic strumming.</span>
+                  </li>
+                  <li>
+                    <span class="check-icon">✓</span>
+                    <span><strong>Bollywood &amp; Hollywood Songs:</strong> Learn to play timeless melodies with step-by-step video guidance.</span>
+                  </li>
+                  <li>
+                    <span class="check-icon">✓</span>
+                    <span><strong>Official Certificate of Completion:</strong> Accredited milestone verification for your musical portfolio.</span>
+                  </li>
+                  <li>
+                    <span class="check-icon">✓</span>
+                    <span><strong>Free Live Workshop Session:</strong> Direct live interactive doubt-clearing session with your mentor.</span>
+                  </li>
+                  <li>
+                    <span class="check-icon">✓</span>
+                    <span><strong>3 Months Unrestricted Streaming:</strong> High-definition lessons available 24/7 on phone, tablet &amp; laptop.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- CTA & Payment Security -->
+              <div class="showcase-cta-group">
+                ${isSubscribed ? `
+                  <a href="/portal" class="btn-enroll-showcase enrolled">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <span>Already Enrolled &bull; Watch in Student Portal</span>
+                  </a>
+                ` : `
+                  <button type="button" class="btn-enroll-showcase" data-action="enroll" data-id="${course.id}">
+                    <span class="btn-cta-text">
+                      <span class="cta-main-text">ENROLL NOW FOR JUST ₹${course.price}</span>
+                      <span class="cta-sub-text">Worth ₹2,500 &bull; Instant Access &bull; Save 90%</span>
+                    </span>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </button>
+                `}
+
+                <div class="showcase-security-strip">
+                  <div class="security-chip">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <span>100% Secure via Razorpay</span>
+                  </div>
+                  <div class="security-chip">
+                    <span>⚡ UPI &bull; GPay &bull; PhonePe &bull; Cards &bull; NetBanking</span>
+                  </div>
+                  <div class="security-chip">
+                    <span>🔒 Instant Access</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      `;
+
+      // Bind action buttons in showcase
+      this.coursesGrid.querySelectorAll('[data-action="enroll"]').forEach(btn => {
+        btn.addEventListener("click", () => {
+          const courseId = btn.dataset.id;
+          const course = COURSES.find(c => c.id === courseId);
+          this.handleEnrollment(course);
+        });
+      });
+      return;
+    }
+
+    this.coursesGrid.classList.remove("courses-grid-showcase");
     this.coursesGrid.innerHTML = filtered.map(course => {
       const isSubscribed = Boolean(this.userSubscriptions[course.id]);
+      const discountPercent = course.originalPrice ? Math.round(((course.originalPrice - course.price) / course.originalPrice) * 100) : null;
 
       return `
         <article class="course-card ${course.comingSoon ? 'coming-soon-card' : ''}" data-id="${course.id}">
           <div class="course-card-poster">
             <img src="${course.previewVideo.poster}" alt="${course.title}">
             <span class="course-badge-pill" ${course.comingSoon ? 'style="background: rgba(212, 175, 55, 0.2); border-color: rgba(212, 175, 55, 0.5); color: var(--brass-light);"' : ''}>${course.badge}</span>
+            ${discountPercent ? `<span class="course-discount-ribbon">${discountPercent}% OFF</span>` : ''}
             <div class="course-validity-badge">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"></circle>
@@ -708,7 +903,10 @@ class ResynkApp {
                   <span class="price-current" style="font-size: 1.25rem; color: var(--brass-light);">Coming Soon</span>
                   <span class="price-sub">Stay Tuned for Launch</span>
                 ` : `
-                  <span class="price-current">₹${course.price.toLocaleString("en-IN")}</span>
+                  <div class="card-price-stack">
+                    ${course.originalPrice ? `<span class="price-orig-struck">₹${(course.originalPrice).toLocaleString("en-IN")}</span>` : ''}
+                    <span class="price-current">₹${course.price.toLocaleString("en-IN")}</span>
+                  </div>
                   <span class="price-sub">3 Months Full Access</span>
                 `}
               </div>
@@ -745,14 +943,12 @@ class ResynkApp {
     }).join('');
 
     // Bind action buttons
-    this.coursesGrid.querySelectorAll(".btn-enroll-card").forEach(btn => {
-      if (btn.dataset.action === "enroll") {
-        btn.addEventListener("click", () => {
-          const courseId = btn.dataset.id;
-          const course = COURSES.find(c => c.id === courseId);
-          this.handleEnrollment(course);
-        });
-      }
+    this.coursesGrid.querySelectorAll('[data-action="enroll"]').forEach(btn => {
+      btn.addEventListener("click", () => {
+        const courseId = btn.dataset.id;
+        const course = COURSES.find(c => c.id === courseId);
+        this.handleEnrollment(course);
+      });
     });
   }
 
