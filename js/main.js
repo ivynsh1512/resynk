@@ -699,7 +699,7 @@ class ResynkApp {
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
-                  <span>3 Months Access (90 - 120 Days)</span>
+                  <span>3 Months Access</span>
                 </div>
               </div>
 
@@ -742,7 +742,7 @@ class ResynkApp {
                 <span class="showcase-tag">SIGNATURE MASTERCLASS</span>
                 <h3 class="showcase-title">${course.title}</h3>
                 <p class="showcase-tagline">
-                  Learn from basic to advanced step by step with certified musicians. Master fundamentals, tabs, scales, over 100+ chords, and several Bollywood &amp; Hollywood songs!
+                  Learn from basic to advanced step by step with certified musicians. Master fundamentals, tabs, scales, over 100 songs (Bollywood &amp; Hollywood)!
                 </p>
               </div>
 
@@ -778,7 +778,7 @@ class ResynkApp {
                   </li>
                   <li>
                     <span class="check-icon">✓</span>
-                    <span><strong>100+ Chords, Tabs &amp; Scales:</strong> Open chords, barre transitions, scale geometry, and rhythmic strumming.</span>
+                    <span><strong>Over 100 Songs:</strong> Master open chords, transitions, scale geometry, and rhythmic strumming across Bollywood &amp; Hollywood hits.</span>
                   </li>
                   <li>
                     <span class="check-icon">✓</span>
@@ -1019,7 +1019,7 @@ class ResynkApp {
           <div style="background: var(--bg-elevated); border: 1px solid var(--border-brass); border-radius: 14px; padding: 18px; margin-bottom: 24px; text-align: left;">
             <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 8px;">
               <span style="color: #94A3B8;">Validity Window:</span>
-              <strong style="color: var(--brass-light);">3 Months (90 - 120 Days)</strong>
+              <strong style="color: var(--brass-light);">3 Months</strong>
             </div>
             <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 8px;">
               <span style="color: #94A3B8;">Access Valid Until:</span>
@@ -1171,7 +1171,7 @@ class ResynkApp {
           Enrollment Required
         </span>
         <h3>Unlock ${course.discipline} Masterclass</h3>
-        <p>Enroll to unlock 3 months (90 - 120 days) of unrestricted streaming, comprehensive lesson sheets, and direct mentor support.</p>
+        <p>Enroll to unlock 3 months of unrestricted streaming, comprehensive lesson sheets, and direct mentor support.</p>
         
         <div class="locked-meta-row">
           <div class="locked-meta-item">

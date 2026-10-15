@@ -1,7 +1,7 @@
 /**
  * ReSynk — Official Academy Curriculum Data
  * Disciplines: Guitar, Keyboard & Piano, Fine Arts
- * Validity: 3 Months (90 - 120 Days) from date of enrollment
+ * Validity: 3 Months from date of enrollment
  */
 
 export const COURSES = [
@@ -20,14 +20,14 @@ export const COURSES = [
     reviewsCount: 142,
     totalLectures: 24,
     totalHours: "16 Hours",
-    description: "Learn from the experts and certified musicians from basic to advanced step by step. We teach guitar fundamentals, tabs, scales, and chords. Learn to play over 100+ chords and several Bollywood and Hollywood songs for just ₹249! Includes a Certificate of Completion at the end of the course and free access to a live workshop session once course is completed to clarify all your doubts.",
+    description: "Learn from the experts and certified musicians from basic to advanced step by step. We teach guitar fundamentals, tabs, scales, and chords. Learn to play over 100 songs (Bollywood & Hollywood) for just ₹249! Includes a Certificate of Completion at the end of the course and free access to a live workshop session once course is completed to clarify all your doubts.",
     highlights: [
       "Learn from Basic to Advanced Step by Step with Certified Musicians",
-      "Master Guitar Basics, Tabs, Scales & Play 100+ Chords",
+      "Master Guitar Basics, Tabs, Scales & Play Over 100 Songs",
       "Learn to Play Several Bollywood and Hollywood Songs with Guided Lessons",
       "Certificate of Completion at the End of the Course",
       "Free Access to Live Workshop Session Once Course Completed to Clarify Doubts",
-      "3 Months Access (90 - 120 Days) for Just ₹249"
+      "3 Months Access for Just ₹249"
     ],
     previewVideo: {
       title: "Lecture 01: Anatomy, Tuning, String Physics & The Golden Posture",
@@ -395,7 +395,7 @@ export const FOUNDER_PORTFOLIO = {
   },
   founderHighlights: [
     { title: "Professional Guitarist, Music Composer & Vocalist", detail: "Over a decade of guitar performance, composition, and vocal mentoring." },
-    { title: "Director & Founder for ReSynk.in", detail: "Visionary leadership providing accessible, master-level arts education." },
+    { title: "Director & Founder of ReSynk.in", detail: "Visionary leadership providing accessible, master-level arts education." },
     { title: "Trained Over 5,000 Students Worldwide", detail: "Mentored over 5,000 students across India and abroad." },
     { title: "Certified Music Teacher & Institutional Anthem Composer", detail: "Composed official anthems for prestigious educational institutions." }
   ],

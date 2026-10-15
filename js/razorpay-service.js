@@ -69,7 +69,7 @@ class RazorpayService {
       image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=120&q=80",
       notes: {
         discipline: course.discipline,
-        validity: "3 Months (90 - 120 Days)",
+        validity: "3 Months",
         userId: currentUser.uid,
         userEmail: currentUser.email
       },
@@ -147,7 +147,7 @@ class RazorpayService {
             
             <div class="checkout-pricing-row">
               <span class="pricing-label">Access Duration:</span>
-              <span class="pricing-val highlight">3 Months Access (90 - 120 Days)</span>
+              <span class="pricing-val highlight">3 Months Access</span>
             </div>
             <div class="checkout-pricing-row">
               <span class="pricing-label">Billed Amount:</span>
