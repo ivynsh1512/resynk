@@ -1615,7 +1615,69 @@ button {
   color: #34D399;
 }
 
-/* Card Price Stack for courses catalog */
+/* Card Price Dual Stack for courses catalog */
+.card-pricing-dual {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 2px;
+}
+
+.price-regular-line {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.price-tag-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.price-strike-val {
+  font-size: 0.95rem;
+  color: #94A3B8;
+  text-decoration: line-through;
+  font-weight: 700;
+}
+
+.price-offer-line {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.price-offer-label {
+  font-size: 0.78rem;
+  color: var(--brass-light);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.price-offer-val {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1;
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
+}
+
+.discount-pill-mini {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: #FFFFFF;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
 .card-price-stack {
   display: flex;
   align-items: baseline;
@@ -1641,6 +1703,44 @@ button {
   border-radius: 4px;
   letter-spacing: 0.05em;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Educational Institutes Grid */
+.educational-institutes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.institute-pill-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #11141D;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 13px 18px;
+  transition: var(--transition);
+}
+
+.institute-pill-card:hover {
+  border-color: var(--border-brass);
+  background: #161A26;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.inst-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.inst-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  line-height: 1.35;
 }
 
 /* ==========================================================

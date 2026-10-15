@@ -903,9 +903,16 @@ class ResynkApp {
                   <span class="price-current" style="font-size: 1.25rem; color: var(--brass-light);">Coming Soon</span>
                   <span class="price-sub">Stay Tuned for Launch</span>
                 ` : `
-                  <div class="card-price-stack">
-                    ${course.originalPrice ? `<span class="price-orig-struck">₹${(course.originalPrice).toLocaleString("en-IN")}</span>` : ''}
-                    <span class="price-current">₹${course.price.toLocaleString("en-IN")}</span>
+                  <div class="card-pricing-dual">
+                    <div class="price-regular-line">
+                      <span class="price-tag-label">Price:</span>
+                      <span class="price-strike-val">₹${(course.originalPrice || 2500).toLocaleString("en-IN")}</span>
+                    </div>
+                    <div class="price-offer-line">
+                      <span class="price-offer-label">Offer Price:</span>
+                      <span class="price-offer-val">₹${course.price.toLocaleString("en-IN")}</span>
+                      <span class="discount-pill-mini">90% OFF</span>
+                    </div>
                   </div>
                   <span class="price-sub">3 Months Full Access</span>
                 `}
