@@ -57,7 +57,8 @@ export default {
           return jsonResponse({
             status: "healthy",
             academy: "resynk — D Paul's Academy",
-            founder: "Master Reynole",
+            founder: "Master Rey",
+            coFounder: "Sneha Sharma",
             database: "Cloudflare D1 (resynk-db)",
             dbStatus,
             totalSubscriptions,
@@ -221,7 +222,7 @@ export default {
 
           return jsonResponse({
             success: true,
-            message: "Inquiry received. Master Reynole will contact you shortly."
+            message: "Inquiry received. Master Rey & academy coordinators will contact you shortly."
           });
         }
 
@@ -244,8 +245,10 @@ export default {
         assetUrl.pathname = "/courses.html";
       } else if (pathname === "/portal") {
         assetUrl.pathname = "/portal.html";
+      } else if (pathname === "/about") {
+        assetUrl.pathname = "/about.html";
       } else if (pathname === "/portfolio") {
-        assetUrl.pathname = "/portfolio.html";
+        assetUrl.pathname = "/about.html";
       } else if (pathname === "/contact") {
         assetUrl.pathname = "/contact.html";
       }

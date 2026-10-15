@@ -212,7 +212,7 @@ const server = http.createServer(async (req, res) => {
       const payload = await parseRequestBody(req);
       sendJSON(res, 200, {
         success: true,
-        message: 'Inquiry received. Master Reynole will contact you shortly.'
+        message: 'Inquiry received. Master Rey & academy coordinators will contact you shortly.'
       });
       return;
     }
@@ -227,7 +227,8 @@ const server = http.createServer(async (req, res) => {
   if (pathname === '/') pathname = '/index.html';
   if (pathname === '/courses') pathname = '/courses.html';
   if (pathname === '/portal') pathname = '/portal.html';
-  if (pathname === '/portfolio') pathname = '/portfolio.html';
+  if (pathname === '/about') pathname = '/about.html';
+  if (pathname === '/portfolio') pathname = '/about.html';
   if (pathname === '/contact') pathname = '/contact.html';
 
   const safePath = path.normalize(pathname).replace(/^(\.\.[\/\\])+/, '');

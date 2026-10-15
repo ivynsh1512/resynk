@@ -410,38 +410,43 @@ export const COURSES = [
 ];
 
 export const FOUNDER_PORTFOLIO = {
-  name: "Master Reynole",
-  academy: "D Paul’s Academy",
+  name: "Master Rey",
+  academy: "Resynk Academy",
   foundedYear: "2014",
-  role: "Founder / Director — D Paul’s Academy",
+  role: "Founder — Music Artist, Composer",
   motto: "Dance • Learn • Grow",
-  overview: "Dedicated to holistic arts and music education since 2014. Cultivating technical mastery, psychological mindfulness, and creative rhythm across thousands of students in Bangalore’s premier schools, colleges, and gated communities.",
+  overview: "Dedicated to holistic arts and music education since 2014. Blending classical music theory, emotional psychology, and fine arts into an empowering conservatory methodology. Training thousands of students across Bangalore's premier schools, colleges, and gated communities.",
+  coFounder: {
+    name: "Sneha Sharma",
+    role: "Co-Founder & Director of Academy Operations",
+    overview: "Directing academy operations, student welfare, curriculum coordination, and institutional partnerships across Bangalore."
+  },
   educationAndCertifications: [
-    { title: "BA Sociology", detail: "Foundational understanding of community development and social harmony through arts." },
-    { title: "PGDP in Psychology", detail: "Post Graduate Diploma in Psychology applying empathetic pedagogical methods for young and adult learners." },
-    { title: "International Certified Happiness Coach", detail: "Integrating music and expressive arts as instruments for well-being, joy, and emotional resilience." },
-    { title: "Certified Comprehensive Music Theorem", detail: "Deep classical & contemporary harmonic music theory, structural composition, and sight performance." }
+    { title: "BA Sociology", detail: "Foundational understanding of community cultural dynamics and collective artistic rituals." },
+    { title: "PGDP in Psychology", detail: "Post Graduate Diploma in Psychology applying empathetic pedagogical methods for accelerated learning." },
+    { title: "International Certified Happiness Coach", detail: "Integrating music, movement, and fine arts as joyful mediums for emotional wellness." },
+    { title: "Certified Comprehensive Music Theorem", detail: "Rigorous certification in harmonic structure, scale harmonization, counterpoint, and classical composition." }
   ],
   awards: [
-    { title: "Seva Bhushan Puraskar Award", level: "State Level Honor", description: "Recognizing outstanding societal contribution through arts, cultural enrichment, and educational outreach." },
-    { title: "Best Empowering Choreographer", level: "Awarded by Swing", description: "Honoring innovative choreography and youth empowerment in dynamic movement & rhythm." },
-    { title: "Coherence Appreciation Award", level: "Artistic Distinction", description: "Celebrated for multidisciplinary artistic coherence and sustained educational leadership." }
+    { title: "Seva Bhushan Puraskar Award", level: "State Level Honor", description: "Recognizing sustained excellence, social impact, and artistic dedication across Karnataka." },
+    { title: "Best Empowering Choreographer", level: "Awarded by Swing", description: "Honoring cutting-edge choreography and rhythm mentoring that empowers performers." },
+    { title: "Coherence Appreciation Award", level: "Artistic Distinction", description: "Conferred for artistic integrity, multidisciplinary harmony, and conservatory curriculum development." }
   ],
-  judgingAndAppearances: [
-    { institution: "St Francis PU College", type: "Guest Judge & Chief Guest (×2)", note: "Annual cultural fest & inter-college arts competition adjudication." },
-    { institution: "Santa Fest by Swing", type: "Keynote & Guest Judge", note: "Statewide winter performing arts showcase." },
-    { institution: "St Anne’s College PU College", type: "Guest Judge & Cultural Advisor (×2)", note: "Youth talent discovery & annual day ceremonies." },
-    { institution: "St Anne’s Women’s Degree College", type: "Distinguished Guest & Judge", note: "Inter-collegiate dance, rhythm, and arts conclave." },
-    { institution: "St Francis Xavier Degree College", type: "Judge & Performance Mentor", note: "Performing arts festival adjudication." },
-    { institution: "United College", type: "Guest Speaker & Arts Adjudicator", note: "Annual university cultural festival." }
+  specialAppearances: [
+    { institution: "St Francis PU College", type: "Special Appearance (×2)", note: "Annual cultural fest & youth talent gala presentations." },
+    { institution: "Santa Fest by Swing", type: "Special Appearance", note: "Statewide youth rhythm, stagecraft, and group choreography showcase." },
+    { institution: "St Anne’s College PU College", type: "Special Appearance (×2)", note: "Youth talent discovery & annual day ceremonies." },
+    { institution: "St Anne’s Women’s Degree College", type: "Special Appearance", note: "Inter-collegiate creative arts and annual exhibitions." },
+    { institution: "St Francis Xavier Degree College", type: "Special Appearance", note: "Music ensembles & inter-collegiate performing festivals." },
+    { institution: "United College", type: "Special Appearance", note: "University-level performing arts and cultural festival." }
   ],
   majorEvents: [
-    { title: "Survana Karnataka Varnangal Event", years: "2016, 2017, 2018, 2023, 2024", highlight: "Statewide grand cultural festival celebrating heritage, rhythm, and artistic expressions." },
-    { title: "Swing Event", years: "2018, 2019", highlight: "Choreography director & artistic lead for signature youth gatherings." },
-    { title: "Global Thinkers Summit Events", years: "2017 & 2018", highlight: "Cultural entertainment coordination and creative presentations." },
-    { title: "Corporate Cultural Events — Mphasis", years: "2015", highlight: "Corporate team building, choreography, and rhythm workshops." },
-    { title: "Corporate Cultural Events — IBM", years: "2014", highlight: "Large-scale annual cultural showcase for IBM Bangalore." },
-    { title: "Community Food Fests & Wedding Galas", years: "Ongoing", highlight: "Musical choreography, creative direction, and live cultural performances." }
+    { title: "Survana Karnataka Varnangal Event", years: "2016, 2017, 2018, 2023, 2024", highlight: "Statewide grand cultural celebrations with special appearance and artistic direction." },
+    { title: "Swing Event", years: "2018, 2019", highlight: "Special appearance, choreography mentorship, and music coordination." },
+    { title: "Global Thinkers Summit Events", years: "2017 & 2018", highlight: "Special appearance and creative presentation for international delegations." },
+    { title: "Corporate Cultural Events — Mphasis", years: "2015", highlight: "Special appearance, team rhythm workshops, and stage performances." },
+    { title: "Corporate Cultural Events — IBM", years: "2014", highlight: "Special appearance and large-scale cultural entertainment coordination." },
+    { title: "Community Food Fests & Wedding Galas", years: "Ongoing", highlight: "Special appearances, bespoke acoustic performances, and choreography showcases." }
   ],
   communities: [
     "Suvarna Karnataka Kerala Samajan",
@@ -478,12 +483,12 @@ export const FOUNDER_PORTFOLIO = {
     "St Francis Xavier Degree College"
   ],
   contact: {
-    instagram: "@Master_reynole",
-    instagramUrl: "https://www.instagram.com/Master_reynole",
     youtube: "@Dpauls_academy",
     youtubeUrl: "https://www.youtube.com/@Dpauls_academy",
     phone: "910 839 6010",
     phoneCallable: "+919108396010",
-    location: "Kothanur, Bangalore, Karnataka, India"
+    email: "info@resynk.in",
+    address: "Resynk, Kothanur, Bangalore 560077",
+    addressLandmark: "Near Hennur Main Road — accessible from Thanisandra, Byrathi & Horamavu"
   }
 };
