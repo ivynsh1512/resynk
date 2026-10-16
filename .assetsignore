@@ -13,3 +13,5 @@ worker.js
 wrangler.toml
 .assetsignore
 .gitignore
+.env
+.env*

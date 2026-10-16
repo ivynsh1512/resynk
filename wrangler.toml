@@ -10,3 +10,6 @@ binding = "ASSETS"
 binding = "DB"
 database_name = "resynk-db"
 database_id = "a2958818-2bb8-4004-b941-60edd0cc6fb9"
+
+[vars]
+RAZORPAY_KEY_ID = "rzp_live_ToSPK8kXuONfmF"

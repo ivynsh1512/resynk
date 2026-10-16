@@ -7,7 +7,13 @@ import { firebaseService } from "./firebase-app.js";
 
 class RazorpayService {
   constructor() {
-    this.keyId = localStorage.getItem("resynk_rzp_key") || "rzp_test_1DP5mmOlF5G5ag"; // Test Key placeholder
+    const stored = localStorage.getItem("resynk_rzp_key");
+    if (!stored || stored.startsWith("rzp_test_")) {
+      this.keyId = "rzp_live_ToSPK8kXuONfmF";
+      localStorage.setItem("resynk_rzp_key", this.keyId);
+    } else {
+      this.keyId = stored;
+    }
     this.isLoaded = false;
     this.loadRazorpayScript();
   }
@@ -57,16 +63,42 @@ class RazorpayService {
     await this.loadRazorpayScript();
 
     const currentUser = firebaseService.currentUser;
-    const amountInPaise = course.price * 100;
+    const amountInPaise = Math.round(course.price * 100);
+
+    // Try pre-creating an authentic Razorpay order via backend
+    let serverOrderId = null;
+    try {
+      const orderRes = await fetch("/api/razorpay/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: course.price,
+          courseId: course.id,
+          discipline: course.discipline
+        })
+      });
+      if (orderRes.ok) {
+        const orderData = await orderRes.json();
+        if (orderData.orderId && orderData.orderId.startsWith("order_")) {
+          serverOrderId = orderData.orderId;
+        }
+        if (orderData.key) {
+          this.keyId = orderData.key;
+        }
+      }
+    } catch (e) {
+      console.warn("Server order pre-creation skipped, continuing with standard checkout:", e);
+    }
 
     // Standard Razorpay options
     const options = {
       key: this.keyId,
       amount: amountInPaise,
       currency: "INR",
-      name: "ReSynk Academy",
+      name: "ReSynk",
       description: `${course.title} (3-Month Access)`,
-      image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=120&q=80",
+      image: `${window.location.origin}/assets/logo.jpg`,
+      ...(serverOrderId ? { order_id: serverOrderId } : {}),
       notes: {
         discipline: course.discipline,
         validity: "3 Months",
@@ -85,7 +117,8 @@ class RazorpayService {
         try {
           const sub = await firebaseService.recordPurchase(course.id, {
             paymentId: response.razorpay_payment_id,
-            orderId: response.razorpay_order_id || ("ord_" + Math.random().toString(36).substring(2, 9)),
+            orderId: response.razorpay_order_id || serverOrderId || ("ord_" + Math.random().toString(36).substring(2, 9)),
+            signature: response.razorpay_signature || "",
             amount: course.price
           });
           if (onSuccess) onSuccess(sub);

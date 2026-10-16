@@ -312,6 +312,7 @@ class FirebaseService {
           userEmail: this.currentUser.email,
           paymentId: subscriptionData.paymentId,
           orderId: subscriptionData.orderId,
+          signature: paymentDetails.signature || "",
           amount: subscriptionData.amountPaid
         })
       });

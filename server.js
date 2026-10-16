@@ -128,7 +128,7 @@ const server = http.createServer(async (req, res) => {
         amount: amount * 100, // paise
         currency: 'INR',
         courseId: courseId,
-        key: process.env.RAZORPAY_KEY_ID || 'rzp_test_1DP5mmOlF5G5ag'
+        key: process.env.RAZORPAY_KEY_ID || 'rzp_live_ToSPK8kXuONfmF'
       });
       return;
     }
